@@ -1,0 +1,39 @@
+- content_for :title, 'Test Answers'
+
+%ul.breadcrumb
+  %li= link_to 'Tests', test_results_path
+  %li.active Results
+  %li.active= @test_code
+
+.page-header.margin-top-5
+  %h1
+    %small
+      Results per question for
+      %b #{@test.title}
+
+
+= link_to 'Results per User', show_per_user_path, :class => 'btn btn-default'
+= link_to 'Results per Question', show_per_question_path, :class => 'btn btn-primary'
+.div.pull-right
+  = link_to "Preview Test", preview_test_path(@test_code), :class => 'btn btn-default'
+  = link_to show_per_question_path(:format => :xlsx), :class => 'btn btn-default' do
+    .glyphicon.glyphicon-download-alt
+    Download Results
+
+
+
+- if @answers.empty?
+  %p.margin-bottom-25.margin-top-25
+    There has not been any response for this test yet.
+-else
+  = table_for @results, :sortable => true, :sort_url => show_per_question_path, :table_html => { :class => 'table', :id => 'table_questions'} do |t|
+    - t.column :question_no
+    - t.column :curriculum_reference, :sortable => false
+    - t.column :total_answers, :formatter => lambda { |d| format_value d}
+    - t.column :average_time, :formatter => lambda { |d| d.to_i == 0 ? '-' : friendly_time((d/1000).round(2))}
+    - t.column :correct_percentage, :formatter => lambda { |t| t.nan? ? '-' : "#{t}%"}
+    - t.column :most_popular_answer, :sortable => false, :formatter => lambda { |d| format_value d}
+    - t.column "  " do |ut|
+      = link_to "Question Preview", question_preview_path(@test_code, ut.question_id), :class => 'btn btn-default'
+    - t.column " " do |ut|
+      = link_to "View Collective Results", question_breakdown_path(@test_code, ut.question_id), :class => 'btn btn-primary'

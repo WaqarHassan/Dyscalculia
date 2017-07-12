@@ -1,0 +1,86 @@
+- content_for :title, 'User Details'
+- content_for :stylesheets do
+  = stylesheet_link_tag 'pages/user_overview', media: :all
+.page-header
+  %h1.h3
+    Account Details
+    = link_to :back, :class => 'btn btn-default pull-right' do
+      .fa.fa-arrow-left
+      Go Back
+.row
+  .col-md-6
+    %h2.h4
+      General Information
+      .account-info
+        .row
+          .col-xs-3
+            %b First name
+          .col-xs-8
+            =@user.first_name
+        .row
+          .col-xs-3
+            %b Last Name
+          .col-xs-8
+            =@user.last_name
+        .row
+          .col-xs-3
+            %b Gender
+          .col-xs-8
+            =@user.gender.humanize
+        .row
+          .col-xs-3
+            %b Date of birth
+          .col-xs-8
+            =friendly_date(@user.date_of_birth)
+        .row
+          .col-xs-3
+            %b Level of education
+          .col-xs-8
+            =@user.level_of_education.humanize
+        .row
+          .col-xs-3
+            %b Employment status
+          .col-xs-8
+            =@user.employment_status.humanize
+        .row
+          .col-xs-3
+            %b Diagnosis
+          .col-xs-8
+            =@user.diagnosis.humanize
+    %h2.h4
+      Contact Information
+      .account-info
+        .row
+          .col-xs-3
+            %b Email
+          .col-xs-3
+            =@user.email
+        .row
+          .col-xs-3
+            %b Post Code
+          .col-xs-3
+            =@user.postcode
+
+  -if @user.user_tests.any?
+    .col-md-6
+      -# %h1.h3 User's Tests
+      -if @completed.any?
+        .row
+          %h2.h4 Completed Tests
+          = table_for @completed, :table_html => { :class => 'table'} do |t|
+            -# - t.column :test_title, :data => lambda {|ut| ut.test.title}
+            - t.column "Test Title", :data => lambda {|ut| ut.test.title}, :link_url => lambda { |ut| show_per_user_path(ut.test.test_code) }
+            - t.column :completed_at, :formatter => lambda { |d| format_value friendly_date(d) }
+            - t.column :score, :data => lambda {|ut| ut.correct_answers}
+            - t.column " " do |ut|
+              =link_to "View Results", user_result_path(ut.test.test_code, ut.user_id), :class => 'btn btn-primary'
+      -if @current.any?
+        .row
+          %h2.h4 Current Tests
+          = table_for @current, :table_html => { :class => 'table'} do |t|
+            - t.column "Test Title", :data => lambda {|ut| ut.test.title}, :link_url => lambda { |ut| show_per_user_path(ut.test.test_code) }
+            - t.column :started_at, :formatter => lambda { |d| format_value friendly_date(d) }
+            - t.column :current_question, :data => lambda {|ut| ut.current_question.question_no.to_s + "/" + ut.test.questions.count.to_s}
+  -else
+    .col-md-6
+      %h2.h4 This user has not enroled to any tests

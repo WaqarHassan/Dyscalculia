@@ -1,0 +1,59 @@
+- content_for :title, 'Overview'
+- content_for :body_class, 'has_background'
+- content_for :stylesheets do
+  = stylesheet_link_tag 'pages/user_overview', media: :all
+- content_for :javascripts do
+  = javascript_include_tag 'pages/user_overview', media: :all
+.page-header.clearfix
+  %h1.pull-left
+    %small Welcome,
+    %small #{@first_name} #{@last_name}
+  .toggle-completed.pull-right
+    %label{:for => 'completed'} Hide Completed Test
+    %input{:type => 'checkbox', :id => 'completed'}
+
+
+- class1 = @tests.any? ? '' : 'hidden'
+- class2 = @tests.any? ? 'hidden' : ''
+.row#has-tests{class: class1}
+  - @tests.each do |t|
+    - classname = t.completed? ? 'completed' : ''
+    .col-md-4.col-sm-6.test{:class => classname}
+      %h2.h3
+        .test-title
+          = t.test.title
+      -if t.test.questions.any?
+        .test-progress-bar{'data-progress' => "#{t.percent_completed}%"}
+          -if !t.started?
+            %h2.h3 New Test
+          -if t.started? && !t.completed?
+            %h2.h3 #{t.percent_completed}% completed
+            %h2.h3
+              %small #{friendlier_time t.time_left} left
+            %h2.h3
+              %small
+                Current Question:
+                = t.current_question.question_no.to_s + "/" + t.test.questions.count.to_s
+          -if t.completed?
+            %h2.h3 Test completed
+            %h2.h3
+              %small #{relative_time(Time.now, t.completed_at)} ago
+          .test-progress-bar-fill
+        %h2.h3
+          = link_to test_path(t.test.test_code) do
+            -if !t.started?
+              Start Test
+            -else
+              -if !t.completed?
+                Continue test
+
+
+      -else
+        This test has no questions yet.
+
+.row#no-tests{class: class2}
+  .span12
+    %h1.h2 You have no tests
+    %h3
+      = link_to enrol_path, name: "Enrol" do
+        Click to enrol here

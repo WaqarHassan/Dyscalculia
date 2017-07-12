@@ -1,0 +1,70 @@
+- content_for :title, 'Account Details'
+- content_for :stylesheets do
+  = stylesheet_link_tag 'pages/user_overview', media: :all
+  -# = stylesheet_link_tag 'base/'
+.page-header
+  %h1.h3 Account Details
+  -# .col-md-6
+  -#   %h1.h3 Test Results
+.row
+  .col-md-6
+    %h2.h4
+      General Information
+      .account-info
+        .row
+          .col-xs-3
+            %b First name
+          .col-xs-8
+            =@user.first_name
+        .row
+          .col-xs-3
+            %b Last Name
+          .col-xs-8
+            =@user.last_name
+        .row
+          .col-xs-3
+            %b Gender
+          .col-xs-8
+            =@user.gender.humanize
+        .row
+          .col-xs-3
+            %b Date of birth
+          .col-xs-8
+            =friendly_date(@user.date_of_birth)
+        - unless @user.level_of_education.nil?
+          .row
+            .col-xs-3
+              %b Level of education
+            .col-xs-8
+              =@user.level_of_education.humanize
+        - unless @user.employment_status.nil?
+          .row
+            .col-xs-3
+              %b Employment status
+            .col-xs-8
+              =@user.employment_status.humanize
+        .row
+          .col-xs-3
+            %b Diagnosis
+          .col-xs-8
+            =@user.diagnosis.humanize
+
+    %h2.h4
+      Contact Information
+      .account-info
+        .row
+          .col-xs-3
+            %b Email
+          .col-xs-3
+            =@user.email
+        .row
+          .col-xs-3
+            %b Post Code
+          .col-xs-3
+            =@user.postcode
+
+  .col-md-12
+    .pull-left.text-left
+      = link_to 'Back', :back, :class => 'btn btn-default'
+      - if @editable
+        = link_to 'Edit Profile', edit_user_registration_path,{:class => 'btn btn-primary'}

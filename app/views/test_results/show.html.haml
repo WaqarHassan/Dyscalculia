@@ -1,0 +1,38 @@
+- content_for :title, 'User test results'
+- content_for :stylesheets do
+  = stylesheet_link_tag 'katex', media: :all
+- content_for :javascripts do
+  = javascript_include_tag 'katex'
+
+%ul.breadcrumb
+  %li= link_to 'Tests', test_results_path
+  %li= link_to 'Results', show_per_user_path(@test.test_code)
+  %li= @test.test_code
+  %li.active= @user.email
+
+.page-header.margin-top-5
+  %h1
+    %small #{@user.first_name} #{@user.last_name}'s results for #{@test.title}
+
+= link_to user_result_path(@test.test_code, @user.id, :format => :xlsx), :class => 'btn btn-default pull-right' do
+  .glyphicon.glyphicon-download-alt
+  Download Results
+
+= table_for @results, :sortable => true, :sort_url => user_result_path(@test_code, @user.id), :table_html => { :class => 'table', :id => 'table_test_and_user'}, :data_row_html => { :class => lambda { cycle(@results.map {|r| r.correct ? 'success' : 'danger'}) } } do |r|
+  - r.column :question_number
+  - r.column :time_taken, :formatter => lambda { |time_taken| friendly_time((time_taken/1000.0).round(2)) }
+  - r.column :answer_given, :sortable => false,:formatter => lambda { |answer_given| format_value(answer_given) }
+  - r.column :correct_answer, :sortable => false
+  - r.column :status, :formatter => :humanize
+  - r.column :correct, :header => "Score", :formatter => lambda { |result| result ? "1" : "0" }
+  -# - r.column "  " do |ut|
+  -#   = link_to "Preview", question_preview_path(@test.test_code, ut.question.id), :class => 'btn btn-default'
+  - r.column "Change Result ", :sortable => false do |ut|
+    - if ut.correct
+      = link_to "Mark as Incorrect", answer_update_user_path(@test_code, @user.id, ut.id), :method => 'post', :class => 'btn btn-danger'
+    - else
+      = link_to "Mark as Correct", answer_update_user_path(@test_code, @user.id, ut.id), :method => 'post', :class => 'btn btn-success'
+  - r.column "Edited", :header_column_html => {:class => 'col-md-1 text-center'} do |ut|
+    - if ut.override
+      .text-center
+        = fa_icon "check"

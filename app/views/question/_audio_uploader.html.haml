@@ -1,0 +1,28 @@
+.audio-uploader{"data-audio-src" => @question_reading}
+  %input.hidden{:type => 'file', :name => 'question[question_reading]'}
+  .inner
+    - front_end_template 'upload-template' do
+      {{#previewing}}
+      %audio{:src => "{{question_reading}}", :controls => "controls"}
+        Can't preview audio in your browser
+      %input{:type => 'hidden', :name => 'question[reading_cache]', :value => @reading_cache}
+      .audio
+        .btn.btn-sm.btn-danger{'data-action-remove' => true} Remove
+        .btn.btn-sm.btn-default{'data-action-change' => true} Change
+      {{/previewing}}
+
+      {{#upload_failed}}
+      .message
+        Failed to preview
+        .btn.btn-sm.btn-success{'data-action-upload' => true} Upload
+      {{/upload_failed}}
+
+      {{#empty}}
+      .message
+        No question recording
+        .btn.btn-sm.btn-success{'data-action-upload' => true} Upload
+      {{/empty}}
+
+      {{#loading}}
+      = render_loader
+      {{/loading}}

@@ -1,0 +1,46 @@
+- content_for :title, 'Admin Overview'
+
+.page-header
+  %h1
+    %small Welcome,
+    %small #{current_user.first_name} #{current_user.last_name}
+
+- if @non_live.empty?
+  %p.margin-bottom-25.margin-top-25
+    No current tests available.
+    =link_to 'Create New Test', new_test_path, :class => 'btn btn-success margin-left-10'
+-else
+  =link_to 'Create New Test', new_test_path, :class => 'btn btn-success margin-top-10 margin-right-5 pull-right'
+  %h2 Draft Tests
+  = table_for @non_live, :table_html => { :class => 'table'} do |t|
+    - t.column :title, :header_column_html => {:class => 'col-md-2'}
+    - t.column :no_of_questions, :header_column_html => {:class => 'col-md-2'}, :data => lambda {|test| test.questions.count}
+    - t.column :duration, :header_column_html => {:class => 'col-md-2'},:formatter => lambda { |duration| friendly_time(duration) }
+    - t.column :data => "Edit", :link_url => lambda { |test| edit_test_path(test.test_code) }, :header_column_html => {:class => 'col-md-2'}
+    - t.column :data => "Duplicate", :link_method => :duplicate, :link_url => lambda { |test| duplicate_test_path(test.test_code) }, :header_column_html => {:class => 'col-md-2'}
+    - t.column :data => "Delete", :link_method => :delete, :link_url => lambda { |test| delete_test_path(test.test_code) }, :link_confirm => "Are you sure?", :header_column_html => {:class => 'col-md-2'}
+    - t.column " ", :header_column_html => {:class => 'col-md-2'} do |t|
+      - if t.questions.count > 0
+        - if t.has_reading_for_all?
+          = link_to "Make live", make_test_live_path(t.test_code) , :class => 'btn btn-primary pull-right', :method => 'post'
+        - else
+          = link_to make_test_live_path(t.test_code) , :class => 'btn btn-warning pull-right', :method => 'post', :'data-confirm' => 'There are some questions without a recorded question reading, are you sure?' do
+            Make live
+            = fa_icon 'exclamation-triangle'
+
+- if @live_tests.empty?
+  %p.margin-bottom-25.margin-top-25
+    No current live tests.
+-else
+  %h2 Live Tests
+  = table_for @live_tests, :table_html => { :class => 'table'} do |t|
+    - t.column :title, :header_column_html => {:class => 'col-md-1'}
+    - t.column :no_of_questions, :header_column_html => {:class => 'col-md-1'}, :data => lambda {|test| test.questions.count}
+    - t.column :test_code, :class => 'col-md-2'
+    - t.column :duration, :formatter => lambda { |duration| friendly_time(duration) }, :header_column_html => {:class => 'col-md-2'}
+    - t.column :data => "Duplicate", :link_method => :duplicate, :link_url => lambda { |test| duplicate_test_path(test.test_code) }, :header_column_html => {:class => 'col-md-2'}
+    - t.column :data => "Delete", :link_method => :delete, :link_url => lambda { |test| delete_test_path(test.test_code) }, :link_confirm => "Are you sure?", :header_column_html => {:class => 'col-md-2'}
+    - t.column " ", :header_column_html => {:class => 'col-md-1'} do |t|
+      = link_to "Preview Test", preview_test_path(t.test_code), :class => 'btn btn-default'
+    - t.column "  ", :header_column_html => {:class => 'col-md-1'} do |ut|
+      = link_to "See Results", show_per_user_path(ut.test_code), :class => 'btn btn-default'

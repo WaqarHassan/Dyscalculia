@@ -1,0 +1,53 @@
+- content_for :title, "Question #{@question_no}"
+
+- content_for :stylesheets do
+  = stylesheet_link_tag 'animate', media: :all
+  = stylesheet_link_tag 'pages/test', media: :all
+  = stylesheet_link_tag 'katex', media: :all
+- content_for :javascripts do
+  = javascript_include_tag 'katex'
+.div.padding-bottom-10
+  = link_to :back, :class => 'btn btn-default pull-right' do
+    .fa.fa-arrow-left
+    Go Back
+
+%h1
+  %p.pull-right.margin-left-20
+    %small.strong Question:
+    %small #{@question.question_no}/#{@current_test.questions.count}
+  Q#{@question.question_no}
+  %small#question
+    = @question.name
+
+    -if @has_reading
+      .audio-speaker
+        %audio{:src => @question_reading, :controls => "controls"}
+        .icon
+          = fa_icon 'volume-off'
+
+- class_name = @has_picture ? 'col-md-6' : 'col-md-12'
+.row.question
+  %form#question-form{:class => class_name, :method => 'post'}
+    - if @question.equations.any?
+      - @question.equations.each do |e|
+        .render-latex.h2
+          = e.text
+    = hidden_field_tag :authenticity_token, form_authenticity_token
+    = hidden_field_tag :time_taken, @time_taken, :id => 'time-taken'
+    - if @question_type == 'MultipleChoiceQuestion'
+      %ul.answers
+        - @answers.each_with_index do |a, i|
+          %li
+            %input{:id => i, :type => 'radio', :name => 'answer', :value => a.answer_text}
+            %label.answer{:for => i}
+              = a.answer_text
+    - else
+      .input-question
+        %input.answer.form-control{:autofocus => 'autofocus',:autocomplete => "off", :type => 'text', :name => 'answer', :placeholder => 'Enter your answer here...'}
+
+    %input.btn.btn-success.pull-right#submit.hidden{:type => '#', :value => 'Submit Answer', :name => 'submit_answer', :class => 'disabled'}
+    %input.btn.btn-default#skip{:type => '#', :value => "I don't know", :name => 'skip', :class => "disabled"}
+
+  - if @has_picture
+    .col-md-6
+      %img.img-thumbnail{:src => @question_picture, :alt => "Picture for the question"}

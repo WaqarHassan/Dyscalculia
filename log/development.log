@@ -1,0 +1,436 @@
+  [1m[36m (366.4ms)[0m  [1mCREATE TABLE `schema_migrations` (`version` varchar(255) NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (475.5ms)[0m  CREATE UNIQUE INDEX `unique_schema_migrations`  ON `schema_migrations` (`version`) 
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateAnswer (20160314171041)
+  [1m[35m (197.2ms)[0m  CREATE TABLE `answers` (`id` int(11) auto_increment PRIMARY KEY, `answer_text` varchar(255), `is_answer` tinyint(1), `input_question_id` int(11), `multiple_choice_question_id` int(11)) ENGINE=InnoDB
+  [1m[36m (181.7ms)[0m  [1mCREATE  INDEX `index_answers_on_input_question_id`  ON `answers` (`input_question_id`) [0m
+  [1m[35m (223.5ms)[0m  CREATE  INDEX `index_answers_on_multiple_choice_question_id`  ON `answers` (`multiple_choice_question_id`) 
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (15.6ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20160314171041')
+  [1m[36m (42.4ms)[0m  [1mCOMMIT[0m
+Migrating to CreateInputQuestion (20160314171259)
+  [1m[35m (82.1ms)[0m  CREATE TABLE `input_questions` (`id` int(11) auto_increment PRIMARY KEY, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.8ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20160314171259')
+  [1m[36m (30.5ms)[0m  [1mCOMMIT[0m
+Migrating to CreateMultipleChoiceQuestion (20160314171335)
+  [1m[35m (124.0ms)[0m  CREATE TABLE `multiple_choice_questions` (`id` int(11) auto_increment PRIMARY KEY, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20160314171335')
+  [1m[36m (31.0ms)[0m  [1mCOMMIT[0m
+Migrating to CreateQuestion (20160314171404)
+  [1m[35m (123.3ms)[0m  CREATE TABLE `questions` (`id` int(11) auto_increment PRIMARY KEY, `name` varchar(255), `questionable_id` int(11), `questionable_type` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL, `test_id` int(11)) ENGINE=InnoDB
+  [1m[36m (147.3ms)[0m  [1mCREATE  INDEX `index_questions_on_name`  ON `questions` (`name`) [0m
+  [1m[35m (150.6ms)[0m  CREATE  INDEX `index_questions_on_questionable_type_and_questionable_id`  ON `questions` (`questionable_type`, `questionable_id`) 
+  [1m[36m (157.1ms)[0m  [1mCREATE  INDEX `index_questions_on_test_id`  ON `questions` (`test_id`) [0m
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mSQL (13.8ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20160314171404')[0m
+  [1m[35m (41.2ms)[0m  COMMIT
+Migrating to CreateTest (20160314171451)
+  [1m[36m (81.3ms)[0m  [1mCREATE TABLE `tests` (`id` int(11) auto_increment PRIMARY KEY, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL, `title` varchar(255), `test_code` varchar(255), `duration` int(11)) ENGINE=InnoDB[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.8ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20160314171451')[0m
+  [1m[35m (29.5ms)[0m  COMMIT
+Migrating to DeviseCreateUsers (20160314171855)
+  [1m[36m (80.8ms)[0m  [1mCREATE TABLE `users` (`id` int(11) auto_increment PRIMARY KEY, `email` varchar(255) DEFAULT '' NOT NULL, `encrypted_password` varchar(255) DEFAULT '' NOT NULL, `reset_password_token` varchar(255), `reset_password_sent_at` datetime, `remember_created_at` datetime, `sign_in_count` int(11) DEFAULT 0 NOT NULL, `current_sign_in_at` datetime, `last_sign_in_at` datetime, `current_sign_in_ip` varchar(255), `last_sign_in_ip` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (231.6ms)[0m  CREATE UNIQUE INDEX `index_users_on_email`  ON `users` (`email`) 
+  [1m[36m (149.6ms)[0m  [1mCREATE UNIQUE INDEX `index_users_on_reset_password_token`  ON `users` (`reset_password_token`) [0m
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mSQL (17.7ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20160314171855')[0m
+  [1m[35m (37.6ms)[0m  COMMIT
+Migrating to CreateSession (20160314172205)
+  [1m[36m (89.9ms)[0m  [1mCREATE TABLE `sessions` (`id` int(11) auto_increment PRIMARY KEY, `session_id` varchar(255) NOT NULL, `data` text, `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mSQL (1.0ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20160314172205')[0m
+  [1m[35m (37.1ms)[0m  COMMIT
+Migrating to AddQuestionNumberToQuestion (20160316182852)
+  [1m[36m (284.9ms)[0m  [1mALTER TABLE `questions` ADD `question_no` int(11)[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.8ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20160316182852')[0m
+  [1m[35m (29.8ms)[0m  COMMIT
+Migrating to AddPictureToQuestions (20160317020559)
+  [1m[36m (208.3ms)[0m  [1mALTER TABLE `questions` ADD `picture` varchar(255)[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.8ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20160317020559')[0m
+  [1m[35m (30.2ms)[0m  COMMIT
+Migrating to CreateUserTests (20160323021404)
+  [1m[36m (80.8ms)[0m  [1mCREATE TABLE `user_tests` (`id` int(11) auto_increment PRIMARY KEY, `started_at` datetime, `deadline_at` datetime, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (15.0ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20160323021404')[0m
+  [1m[35m (32.5ms)[0m  COMMIT
+Migrating to UpdateUserTestsJoin (20160323021812)
+  [1m[36m (192.1ms)[0m  [1mALTER TABLE `user_tests` ADD `user_id` int(11)[0m
+  [1m[35m (149.4ms)[0m  CREATE  INDEX `index_user_tests_on_user_id`  ON `user_tests` (`user_id`) 
+  [1m[36m (210.2ms)[0m  [1mALTER TABLE `user_tests` ADD `test_id` int(11)[0m
+  [1m[35m (157.9ms)[0m  CREATE  INDEX `index_user_tests_on_test_id`  ON `user_tests` (`test_id`) 
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20160323021812')
+  [1m[36m (37.7ms)[0m  [1mCOMMIT[0m
+Migrating to CreateUserQuestions (20160323031143)
+  [1m[35m (114.2ms)[0m  CREATE TABLE `user_answers` (`id` int(11) auto_increment PRIMARY KEY, `time_taken` int(11), `answer_text` text, `correct` tinyint(1), `user_test_id` int(11), `question_id` int(11), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL,  INDEX `index_user_answers_on_user_test_id`  (`user_test_id`) ,  INDEX `index_user_answers_on_question_id`  (`question_id`) ) ENGINE=InnoDB
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20160323031143')
+  [1m[36m (30.9ms)[0m  [1mCOMMIT[0m
+Migrating to AddCurriculumReferenceToQuestions (20160324185914)
+  [1m[35m (223.8ms)[0m  ALTER TABLE `questions` ADD `curriculum_reference` varchar(255)
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (13.1ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20160324185914')
+  [1m[36m (34.4ms)[0m  [1mCOMMIT[0m
+Migrating to CreateEquations (20160326021553)
+  [1m[35m (198.8ms)[0m  CREATE TABLE `equations` (`id` int(11) auto_increment PRIMARY KEY, `text` varchar(255), `question_id` int(11),  INDEX `index_equations_on_question_id`  (`question_id`) ) ENGINE=InnoDB
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (1.0ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20160326021553')
+  [1m[36m (37.1ms)[0m  [1mCOMMIT[0m
+Migrating to AddReadingToQuestions (20160327135918)
+  [1m[35m (208.6ms)[0m  ALTER TABLE `questions` ADD `reading` varchar(255)
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (15.4ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20160327135918')
+  [1m[36m (39.7ms)[0m  [1mCOMMIT[0m
+Migrating to AddMaxTimeToQuestions (20160402181939)
+  [1m[35m (168.3ms)[0m  ALTER TABLE `questions` ADD `max_time` int(11)
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (9.5ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20160402181939')
+  [1m[36m (30.4ms)[0m  [1mCOMMIT[0m
+Migrating to AddStatusToUserAnswers (20160403005528)
+  [1m[35m (199.9ms)[0m  ALTER TABLE `user_answers` ADD `status` int(11) DEFAULT 0
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (11.0ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20160403005528')
+  [1m[36m (36.4ms)[0m  [1mCOMMIT[0m
+Migrating to AddDefaultTimeToTimeTakenInQuestion (20160403023938)
+  [1m[35m (30.7ms)[0m  ALTER TABLE `user_answers` CHANGE `time_taken` `time_taken` int(11) DEFAULT 0
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20160403023938')
+  [1m[36m (38.7ms)[0m  [1mCOMMIT[0m
+Migrating to AddDefaultUserAnswerToBeIncorrect (20160404212039)
+  [1m[35m (31.4ms)[0m  ALTER TABLE `user_answers` CHANGE `correct` `correct` tinyint(1) DEFAULT 0
+  [1m[36m (0.6ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (1.4ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20160404212039')
+  [1m[36m (35.5ms)[0m  [1mCOMMIT[0m
+Migrating to AddCompletedAtToUserTest (20160404231000)
+  [1m[35m (225.8ms)[0m  ALTER TABLE `user_tests` ADD `completed_at` datetime
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20160404231000')
+  [1m[36m (38.4ms)[0m  [1mCOMMIT[0m
+Migrating to AddFieldsToUser (20160407130657)
+  [1m[35m (185.1ms)[0m  ALTER TABLE `users` ADD `date_of_birth` date
+  [1m[36m (192.8ms)[0m  [1mALTER TABLE `users` ADD `postcode` varchar(255)[0m
+  [1m[35m (209.1ms)[0m  ALTER TABLE `users` ADD `level_of_education` int(11) DEFAULT 0
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (18.6ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20160407130657')
+  [1m[36m (36.4ms)[0m  [1mCOMMIT[0m
+Migrating to AddNameColumnToUser (20160407153048)
+  [1m[35m (242.2ms)[0m  ALTER TABLE `users` ADD `first_name` varchar(255)
+  [1m[36m (185.7ms)[0m  [1mALTER TABLE `users` ADD `last_name` varchar(255)[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mSQL (15.0ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20160407153048')[0m
+  [1m[35m (31.7ms)[0m  COMMIT
+Migrating to AddLiveFieldToTests (20160412101833)
+  [1m[36m (200.6ms)[0m  [1mALTER TABLE `tests` ADD `live` tinyint(1) DEFAULT 0[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20160412101833')[0m
+  [1m[35m (37.8ms)[0m  COMMIT
+Migrating to DeviseCreateAdmins (20160418151827)
+  [1m[36m (89.7ms)[0m  [1mCREATE TABLE `admins` (`id` int(11) auto_increment PRIMARY KEY, `email` varchar(255) DEFAULT '' NOT NULL, `encrypted_password` varchar(255) DEFAULT '' NOT NULL, `reset_password_token` varchar(255), `reset_password_sent_at` datetime, `remember_created_at` datetime, `sign_in_count` int(11) DEFAULT 0 NOT NULL, `current_sign_in_at` datetime, `last_sign_in_at` datetime, `current_sign_in_ip` varchar(255), `last_sign_in_ip` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (149.3ms)[0m  CREATE UNIQUE INDEX `index_admins_on_email`  ON `admins` (`email`) 
+  [1m[36m (156.7ms)[0m  [1mCREATE UNIQUE INDEX `index_admins_on_reset_password_token`  ON `admins` (`reset_password_token`) [0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20160418151827')[0m
+  [1m[35m (38.9ms)[0m  COMMIT
+Migrating to DropAdminTable (20160420104612)
+  [1m[36m (41.0ms)[0m  [1mDROP TABLE `admins`[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (19.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20160420104612')[0m
+  [1m[35m (28.4ms)[0m  COMMIT
+Migrating to AddAdminToUsers (20160422145525)
+  [1m[36m (168.7ms)[0m  [1mALTER TABLE `users` ADD `admin` tinyint(1) DEFAULT 0[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (15.4ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20160422145525')[0m
+  [1m[35m (31.5ms)[0m  COMMIT
+Migrating to AddFurtherDetailsToUser (20160509120747)
+  [1m[36m (183.7ms)[0m  [1mALTER TABLE `users` ADD `diagnosis` int(11) DEFAULT 0[0m
+  [1m[35m (234.6ms)[0m  ALTER TABLE `users` ADD `gender` int(11) DEFAULT 0
+  [1m[36m (284.8ms)[0m  [1mALTER TABLE `users` ADD `employment_status` int(11) DEFAULT 0[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20160509120747')[0m
+  [1m[35m (88.8ms)[0m  COMMIT
+Migrating to ChangeTypeOfUserColumns (20160509130129)
+  [1m[36m (256.1ms)[0m  [1mALTER TABLE `users` CHANGE `level_of_education` `level_of_education` varchar(255) DEFAULT 0[0m
+  [1m[35m (190.3ms)[0m  ALTER TABLE `users` CHANGE `diagnosis` `diagnosis` varchar(255) DEFAULT 0
+  [1m[36m (207.3ms)[0m  [1mALTER TABLE `users` CHANGE `employment_status` `employment_status` varchar(255) DEFAULT 0[0m
+  [1m[35m (0.5ms)[0m  BEGIN
+  [1m[36mSQL (11.9ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20160509130129')[0m
+  [1m[35m (34.1ms)[0m  COMMIT
+Migrating to AddExtraTimeToUserAnswer (20160510212602)
+  [1m[36m (1125.9ms)[0m  [1mALTER TABLE `user_answers` ADD `extra_time` int(11) DEFAULT 0[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20160510212602')[0m
+  [1m[35m (37.8ms)[0m  COMMIT
+Migrating to DeleteDefaultValues (20160511112205)
+  [1m[36m (44.9ms)[0m  [1mALTER TABLE `users` CHANGE `level_of_education` `level_of_education` varchar(255) DEFAULT NULL[0m
+  [1m[35m (62.7ms)[0m  ALTER TABLE `users` CHANGE `employment_status` `employment_status` varchar(255) DEFAULT NULL
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20160511112205')
+  [1m[36m (52.4ms)[0m  [1mCOMMIT[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.5ms)[0m  SELECT `schema_migrations`.* FROM `schema_migrations`
+  [1m[36m (0.7ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'dyscalculia_dev'
+  AND fk.table_name = 'answers'
+[0m
+  [1m[35m (0.4ms)[0m  SHOW CREATE TABLE `answers`
+  [1m[36m (0.6ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'dyscalculia_dev'
+  AND fk.table_name = 'equations'
+[0m
+  [1m[35m (0.4ms)[0m  SHOW CREATE TABLE `equations`
+  [1m[36m (0.5ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'dyscalculia_dev'
+  AND fk.table_name = 'input_questions'
+[0m
+  [1m[35m (0.3ms)[0m  SHOW CREATE TABLE `input_questions`
+  [1m[36m (0.5ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'dyscalculia_dev'
+  AND fk.table_name = 'multiple_choice_questions'
+[0m
+  [1m[35m (0.4ms)[0m  SHOW CREATE TABLE `multiple_choice_questions`
+  [1m[36m (0.6ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'dyscalculia_dev'
+  AND fk.table_name = 'questions'
+[0m
+  [1m[35m (0.4ms)[0m  SHOW CREATE TABLE `questions`
+  [1m[36m (0.5ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'dyscalculia_dev'
+  AND fk.table_name = 'sessions'
+[0m
+  [1m[35m (0.3ms)[0m  SHOW CREATE TABLE `sessions`
+  [1m[36m (0.6ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'dyscalculia_dev'
+  AND fk.table_name = 'tests'
+[0m
+  [1m[35m (0.4ms)[0m  SHOW CREATE TABLE `tests`
+  [1m[36m (0.6ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'dyscalculia_dev'
+  AND fk.table_name = 'user_answers'
+[0m
+  [1m[35m (0.3ms)[0m  SHOW CREATE TABLE `user_answers`
+  [1m[36m (0.5ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'dyscalculia_dev'
+  AND fk.table_name = 'user_tests'
+[0m
+  [1m[35m (0.3ms)[0m  SHOW CREATE TABLE `user_tests`
+  [1m[36m (0.4ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'dyscalculia_dev'
+  AND fk.table_name = 'users'
+[0m
+  [1m[35m (0.3ms)[0m  SHOW CREATE TABLE `users`
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (21.2ms)[0m  [1mINSERT INTO `answers` (`answer_text`, `is_answer`) VALUES ('4', 1)[0m
+  [1m[35m (37.3ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (13.9ms)[0m  INSERT INTO `answers` (`answer_text`) VALUES ('2')
+  [1m[36m (34.1ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO `answers` (`answer_text`) VALUES ('1')[0m
+  [1m[35m (38.6ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO `answers` (`answer_text`) VALUES ('8')
+  [1m[36m (39.0ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (10.2ms)[0m  [1mINSERT INTO `answers` (`answer_text`) VALUES ('10')[0m
+  [1m[35m (33.5ms)[0m  COMMIT
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO `answers` (`answer_text`) VALUES ('25')
+  [1m[36m (38.7ms)[0m  [1mCOMMIT[0m
+  [1m[35mTest Load (0.5ms)[0m  SELECT  `tests`.* FROM `tests`  ORDER BY `tests`.`id` ASC LIMIT 1
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO `tests` (`title`, `duration`, `created_at`, `updated_at`, `test_code`) VALUES ('Example Test', 432000, '2017-07-12 18:56:44', '2017-07-12 18:56:44', 'af849e')
+  [1m[36mSQL (17.4ms)[0m  [1mINSERT INTO `multiple_choice_questions` (`created_at`, `updated_at`) VALUES ('2017-07-12 18:56:44', '2017-07-12 18:56:44')[0m
+  [1m[35mSQL (10.6ms)[0m  UPDATE `answers` SET `multiple_choice_question_id` = 1 WHERE `answers`.`id` = 1
+  [1m[36mSQL (0.4ms)[0m  [1mUPDATE `answers` SET `multiple_choice_question_id` = 1 WHERE `answers`.`id` = 2[0m
+  [1m[35mSQL (0.4ms)[0m  UPDATE `answers` SET `multiple_choice_question_id` = 1 WHERE `answers`.`id` = 3
+  [1m[36mSQL (0.4ms)[0m  [1mUPDATE `answers` SET `multiple_choice_question_id` = 1 WHERE `answers`.`id` = 4[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO `questions` (`name`, `questionable_type`, `curriculum_reference`, `max_time`, `test_id`, `questionable_id`, `created_at`, `updated_at`) VALUES ('What is 2+2?', 'MultipleChoiceQuestion', 'testing', 300, 1, 1, '2017-07-12 18:56:44', '2017-07-12 18:56:44')
+  [1m[36mSQL (9.8ms)[0m  [1mINSERT INTO `input_questions` (`created_at`, `updated_at`) VALUES ('2017-07-12 18:56:44', '2017-07-12 18:56:44')[0m
+  [1m[35mSQL (0.5ms)[0m  UPDATE `answers` SET `input_question_id` = 1 WHERE `answers`.`id` = 5
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO `questions` (`name`, `questionable_type`, `curriculum_reference`, `max_time`, `test_id`, `questionable_id`, `created_at`, `updated_at`) VALUES ('What is 5+5?', 'InputQuestion', 'testing', 300, 1, 1, '2017-07-12 18:56:44', '2017-07-12 18:56:44')[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `input_questions` (`created_at`, `updated_at`) VALUES ('2017-07-12 18:56:44', '2017-07-12 18:56:44')
+  [1m[36mSQL (0.6ms)[0m  [1mUPDATE `answers` SET `input_question_id` = 2 WHERE `answers`.`id` = 6[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO `questions` (`name`, `questionable_type`, `curriculum_reference`, `max_time`, `test_id`, `questionable_id`, `created_at`, `updated_at`) VALUES ('What is 5*5?', 'InputQuestion', 'testing', 300, 1, 2, '2017-07-12 18:56:44', '2017-07-12 18:56:44')
+  [1m[36mSQL (0.7ms)[0m  [1mUPDATE `questions` SET `question_no` = 1, `updated_at` = '2017-07-12 18:56:44' WHERE `questions`.`id` = 1[0m
+  [1m[35mSQL (0.6ms)[0m  UPDATE `questions` SET `question_no` = 2, `updated_at` = '2017-07-12 18:56:44' WHERE `questions`.`id` = 2
+  [1m[36mSQL (0.6ms)[0m  [1mUPDATE `questions` SET `question_no` = 3, `updated_at` = '2017-07-12 18:56:44' WHERE `questions`.`id` = 3[0m
+  [1m[35m (115.8ms)[0m  COMMIT
+  [1m[36mUser Load (0.9ms)[0m  [1mSELECT  `users`.* FROM `users` WHERE `users`.`first_name` = 'Admin' AND `users`.`last_name` = 'Adminton' AND `users`.`email` = 'admin@example.com' AND `users`.`postcode` = 'S3 7GA'  ORDER BY `users`.`id` ASC LIMIT 1[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUser Exists (31.4ms)[0m  [1mSELECT  1 AS one FROM `users` WHERE `users`.`email` = BINARY 'admin@example.com' LIMIT 1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `users` (`first_name`, `last_name`, `email`, `postcode`, `encrypted_password`, `level_of_education`, `employment_status`, `diagnosis`, `admin`, `created_at`, `updated_at`) VALUES ('Admin', 'Adminton', 'admin@example.com', 'S3 7GA', '$2a$10$IK7pQadXh2TWUaMuVdqFResmDYiAcGTCEBOL3Iz5AUqtIl6sI4qi.', 'None', 'Unemployed', 'None', 1, '2017-07-12 18:56:44', '2017-07-12 18:56:44')
+  [1m[36m (34.6ms)[0m  [1mCOMMIT[0m
+  [1m[35mTest Load (0.4ms)[0m  SELECT  `tests`.* FROM `tests`  ORDER BY `tests`.`id` ASC LIMIT 1
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  `users`.* FROM `users`  ORDER BY `users`.`id` ASC LIMIT 1[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUserTest Exists (16.5ms)[0m  [1mSELECT  1 AS one FROM `user_tests` WHERE (`user_tests`.`user_id` = BINARY 1 AND `user_tests`.`test_id` = 1) LIMIT 1[0m
+  [1m[35mSQL (7.3ms)[0m  INSERT INTO `user_tests` (`test_id`, `user_id`, `created_at`, `updated_at`) VALUES (1, 1, '2017-07-12 18:56:44', '2017-07-12 18:56:44')
+  [1m[36m (29.2ms)[0m  [1mCOMMIT[0m
+
+
+Started GET "/" for 127.0.0.1 at 2017-07-12 23:58:10 +0500
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Processing by UserOverviewController#index as HTML
+Completed 401 Unauthorized in 14ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/users/sign_in" for 127.0.0.1 at 2017-07-12 23:58:11 +0500
+Processing by Devise::SessionsController#new as HTML
+  Rendered devise/shared/_links.html.haml (13.6ms)
+  Rendered devise/sessions/new.html.haml within layouts/base (129.1ms)
+WARNING on line 68 of /home/entrepreneur/Desktop/Team 5 Source files/app/assets/stylesheets/base/components.sass:
+This selector doesn't have any properties and will not be rendered.
+
+Warning. Error encountered while saving cache 3f9d8d6bc3bd4594575949ff9f0b22adcd83dd63/main.sassc: can't dump hash with default proc
+
+Warning. Error encountered while saving cache 3f9d8d6bc3bd4594575949ff9f0b22adcd83dd63/main.sassc: can't dump hash with default proc
+
+  Rendered layouts/_environment_notice.html.haml (1.2ms)
+Completed 200 OK in 7703ms (Views: 7681.3ms | ActiveRecord: 1.2ms)
+
+
+Started POST "/users/sign_in" for 127.0.0.1 at 2017-07-12 23:59:05 +0500
+Processing by Devise::SessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"RcbIzN+mW4p5NSDTG6M92Q3Vs2WwTrDELu+K27XXccT2gPgRMSfHGZcrnoFIQ24RgLB/h3HIJLic9bhnCE5V8g==", "user"=>{"email"=>"admin@example.com", "password"=>"[FILTERED]", "remember_me"=>"1"}}
+  [1m[35mUser Load (0.3ms)[0m  SELECT  `users`.* FROM `users` WHERE `users`.`email` = 'admin@example.com'  ORDER BY `users`.`id` ASC LIMIT 1
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  UPDATE `users` SET `remember_created_at` = '2017-07-12 18:59:05', `updated_at` = '2017-07-12 18:59:05' WHERE `users`.`id` = 1
+  [1m[36m (36.2ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mUPDATE `users` SET `last_sign_in_at` = '2017-07-12 18:59:05', `current_sign_in_at` = '2017-07-12 18:59:05', `last_sign_in_ip` = '127.0.0.1', `current_sign_in_ip` = '127.0.0.1', `sign_in_count` = 1, `updated_at` = '2017-07-12 18:59:05' WHERE `users`.`id` = 1[0m
+  [1m[35m (122.1ms)[0m  COMMIT
+Redirected to http://localhost:3000/
+Completed 302 Found in 294ms (ActiveRecord: 160.7ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-07-12 23:59:06 +0500
+Processing by UserOverviewController#index as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1mSELECT  `users`.* FROM `users` WHERE `users`.`id` = 1  ORDER BY `users`.`id` ASC LIMIT 1[0m
+DEPRECATION WARNING: You are passing an instance of ActiveRecord::Base to `find`. Please pass the id of the object by calling `.id`. (called from index at /home/entrepreneur/Desktop/Team 5 Source files/app/controllers/user_overview_controller.rb:3)
+  [1m[35mUser Load (0.7ms)[0m  SELECT  `users`.* FROM `users` WHERE `users`.`id` = 1 LIMIT 1
+  [1m[36mUserTest Load (0.3ms)[0m  [1mSELECT `user_tests`.* FROM `user_tests` WHERE `user_tests`.`user_id` = 1[0m
+  [1m[35mTest Load (0.3ms)[0m  SELECT  `tests`.* FROM `tests` WHERE `tests`.`id` = 1 LIMIT 1
+  Rendered user_overview/index.html.haml within layouts/application (26.9ms)
+  Rendered layouts/_environment_notice.html.haml (0.1ms)
+Completed 200 OK in 306ms (Views: 182.2ms | ActiveRecord: 6.5ms)
+
+
+Started GET "/tests/enrol" for 127.0.0.1 at 2017-07-12 23:59:11 +0500
+Processing by TestsController#enrol as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  `users`.* FROM `users` WHERE `users`.`id` = 1  ORDER BY `users`.`id` ASC LIMIT 1[0m
+  Rendered tests/enrol.html.haml within layouts/application (11.0ms)
+  Rendered layouts/_environment_notice.html.haml (0.1ms)
+Completed 200 OK in 145ms (Views: 102.0ms | ActiveRecord: 1.8ms)
+
+
+Started POST "/tests/enrol" for 127.0.0.1 at 2017-07-12 23:59:19 +0500
+Processing by TestsController#process_enrol as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"mHfr7EHs6kQDEmzT8pOrtF8ez5ttbSE66quUDVtkqgruvCKE/2ZlT2qYQoxjyP+oaTwFhxu5u2LYuQUjEH6GBQ==", "test_code"=>"Math", "commit"=>"Enrol"}
+  [1m[35mUser Load (0.2ms)[0m  SELECT  `users`.* FROM `users` WHERE `users`.`id` = 1  ORDER BY `users`.`id` ASC LIMIT 1
+  [1m[36mTest Load (0.4ms)[0m  [1mSELECT  `tests`.* FROM `tests` WHERE `tests`.`test_code` = 'Math' LIMIT 1[0m
+  Rendered tests/enrol.html.haml within layouts/application (3.9ms)
+  Rendered layouts/_environment_notice.html.haml (0.1ms)
+Completed 200 OK in 127ms (Views: 85.5ms | ActiveRecord: 3.5ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-07-13 00:03:27 +0500
+Processing by UserOverviewController#index as HTML
+  [1m[35mUser Load (0.1ms)[0m  SELECT  `users`.* FROM `users` WHERE `users`.`id` = 1  ORDER BY `users`.`id` ASC LIMIT 1
+DEPRECATION WARNING: You are passing an instance of ActiveRecord::Base to `find`. Please pass the id of the object by calling `.id`. (called from index at /home/entrepreneur/Desktop/Team 5 Source files/app/controllers/user_overview_controller.rb:3)
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  `users`.* FROM `users` WHERE `users`.`id` = 1 LIMIT 1[0m
+  [1m[35mUserTest Load (0.2ms)[0m  SELECT `user_tests`.* FROM `user_tests` WHERE `user_tests`.`user_id` = 1
+  [1m[36mTest Load (0.2ms)[0m  [1mSELECT  `tests`.* FROM `tests` WHERE `tests`.`id` = 1 LIMIT 1[0m
+  Rendered user_overview/index.html.haml within layouts/application (6.3ms)
+  Rendered layouts/_environment_notice.html.haml (0.1ms)
+Completed 200 OK in 139ms (Views: 88.7ms | ActiveRecord: 3.4ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-07-13 00:03:31 +0500
+Processing by UserOverviewController#index as HTML
+  [1m[35mUser Load (0.1ms)[0m  SELECT  `users`.* FROM `users` WHERE `users`.`id` = 1  ORDER BY `users`.`id` ASC LIMIT 1
+DEPRECATION WARNING: You are passing an instance of ActiveRecord::Base to `find`. Please pass the id of the object by calling `.id`. (called from index at /home/entrepreneur/Desktop/Team 5 Source files/app/controllers/user_overview_controller.rb:3)
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  `users`.* FROM `users` WHERE `users`.`id` = 1 LIMIT 1[0m
+  [1m[35mUserTest Load (0.3ms)[0m  SELECT `user_tests`.* FROM `user_tests` WHERE `user_tests`.`user_id` = 1
+  [1m[36mTest Load (0.5ms)[0m  [1mSELECT  `tests`.* FROM `tests` WHERE `tests`.`id` = 1 LIMIT 1[0m
+  Rendered user_overview/index.html.haml within layouts/application (4.8ms)
+  Rendered layouts/_environment_notice.html.haml (0.1ms)
+Completed 200 OK in 163ms (Views: 101.4ms | ActiveRecord: 4.4ms)
+
+
+Started DELETE "/users/sign_out" for 127.0.0.1 at 2017-07-13 00:03:38 +0500
+Processing by Devise::SessionsController#destroy as HTML
+  Parameters: {"authenticity_token"=>"wWamDX9tcfM23UhQRBBJIGqB9mAyyyl9LTQODEZPSNu3rW9lwef++F9XZg/VSx08XKM8fEQfsyUfJp8iDVVk1A=="}
+  [1m[35mUser Load (0.1ms)[0m  SELECT  `users`.* FROM `users` WHERE `users`.`id` = 1  ORDER BY `users`.`id` ASC LIMIT 1
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  UPDATE `users` SET `remember_created_at` = NULL, `updated_at` = '2017-07-12 19:03:38' WHERE `users`.`id` = 1
+  [1m[36m (128.4ms)[0m  [1mCOMMIT[0m
+Redirected to http://localhost:3000/
+Completed 302 Found in 213ms (ActiveRecord: 188.4ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-07-13 00:03:38 +0500
+Processing by UserOverviewController#index as HTML
+Completed 401 Unauthorized in 6ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/users/sign_in" for 127.0.0.1 at 2017-07-13 00:03:38 +0500
+Processing by Devise::SessionsController#new as HTML
+  Rendered devise/shared/_links.html.haml (6.4ms)
+  Rendered devise/sessions/new.html.haml within layouts/base (22.3ms)
+  Rendered layouts/_environment_notice.html.haml (0.1ms)
+Completed 200 OK in 133ms (Views: 118.0ms | ActiveRecord: 1.4ms)

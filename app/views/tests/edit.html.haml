@@ -1,0 +1,87 @@
+- content_for :title, 'Editing test'
+- content_for :stylesheets do
+  = stylesheet_link_tag 'katex', media: :all
+- content_for :javascripts do
+  = javascript_include_tag 'katex'
+  = javascript_include_tag 'pages/edit_test'
+
+%ul.breadcrumb
+  %li= link_to 'Tests', test_results_path
+  %li.active= @test_code
+
+.row.col.col-md-5.col-centered.padding-10
+  %h1
+    Edit Test
+
+.row
+  .col.col-md-5.col-centered
+    = simple_form_for @test do |f|
+      =link_to "Stop Editing", test_results_path, :class => 'btn btn-default margin-bottom-10'
+      #render-save-button.pull-right.margin-bottom-10
+      #title
+        = f.input :title
+      %strong Duration
+      .form-inline.margin-bottom-15#duration
+        = f.select :duration, (1..20), :selected => @test.duration/24/60/60
+        Days
+    - front_end_template 'save_button_template' do
+      {{#clean}}
+      %button.disabled.btn.btn-default{:disabled => "disabled"} All changes saved
+      {{/clean}}
+
+      {{#dirty}}
+      .btn-group
+        %a.btn.btn-danger#cancel{:href => request.path, "data-message" => "Are you sure you want to cancel change? This action can not be undone."} Cancel Changes
+        %button.btn.btn-success#save Save!
+      {{/dirty}}
+
+      {{#saving}}
+      %button.btn.btn-default.disabled{:disabled => "disabled"}
+        = render_loader
+        Saving
+      {{/saving}}
+
+      {{#canceling}}
+      %button.btn.btn-default.disabled{:disabled => "disabled"}
+        = render_loader
+        Canceling changes
+      {{/canceling}}
+
+    - if @questions.empty?
+      %p No questions.
+    -else
+      %label{:for => 'test-title'} Questions
+      %ul.questions
+        - @questions.each do |q|
+          %li.question.clearfix
+            .question-no Q#{q.question_no}
+            = q.name
+            - if q.equations.any?
+              .equations
+                - q.equations.each do |e|
+                  .render-latex=e.text
+            - unless q.picture.path.nil?
+              %img.img-responsive.margin-bottom-10{:src=>q.picture, :alt=>'Image for question'}
+            .question-footer
+              %ul.icons.pull-left
+                - unless q.picture.path.nil?
+                  %li=fa_icon 'picture-o'
+                - unless q.reading.path.nil?
+                  %li=fa_icon 'volume-up'
+                %li
+                  =fa_icon 'clock-o'
+                  =friendly_time(q.max_time)
+
+              .pull-right
+                =link_to 'Edit', edit_question_path(@test_code, q.question_no), :class => 'btn btn-primary'
+                =link_to 'Delete', delete_question_path(@test_code, q.question_no), :class => 'btn btn-danger', :method => 'delete', :data => {confirm: 'Are you sure?'}
+
+    =link_to 'Add question', new_question_path(@test_code), :class => 'btn btn-success margin-bottom-10'
+    .text-center
+      = will_paginate @questions
+
+:javascript
+  $(function() {
+  // Hacky fix for simple_form not allowing adding a class to the select
+    $('select').addClass('form-control');
+  });

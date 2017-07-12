@@ -1,0 +1,14 @@
+- content_for :title, 'Enrol'
+.col-md-6.col-centered
+  %h1.h2.h3.margin-top-75 Enrol in a test!
+
+  -unless @errors.blank?
+    .alert.alert-danger{:role => "alert"}
+      %a.close{"data-dismiss" => "alert"} ×
+      %ul.list-unstyled
+        - @errors.each do |e|
+          %li.margin-top-10=e
+
+  = simple_form_for (@test), :url => {:action => 'enrol', :controller => 'tests'}, :method => 'post' do |f|
+    = f.input_field :test_code, name: 'test_code', label: 'Enter your test code.', class: 'form-control'
+    = f.button :submit, 'Enrol', {:class => 'margin-top-10 pull-right btn btn-primary'}

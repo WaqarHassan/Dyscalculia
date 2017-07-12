@@ -1,0 +1,55 @@
+- content_for :title, 'Editing test'
+- content_for :stylesheets do
+  = stylesheet_link_tag 'katex', media: :all
+- content_for :javascripts do
+  = javascript_include_tag 'katex'
+
+.container
+  = link_to :back, :class => 'btn btn-default pull-right' do
+    .fa.fa-arrow-left
+    Go Back
+  %ul.breadcrumb
+    %li= link_to 'Tests', test_results_path
+    %li.active= @test_code
+    %li.active Preview
+
+
+
+.row.col.col-md-5.col-centered.padding-10
+  %h1
+    Preview Test
+
+.row
+  .col.col-md-5.col-centered
+    .margin-bottom-20.h2#test-title
+      = @title
+
+    - if @questions.empty?
+      %p No questions.
+    -else
+      %label{:for => 'test-title'} Questions
+      %ul.questions
+        - @questions.each do |q|
+          %li.question.clearfix
+            = link_to "Preview", question_preview_path(@test_code, q.id), :class => 'btn btn-default pull-right'
+            .question-no Q#{q.question_no}
+            = q.name
+            -# = link_to "Preview", question_preview_path(@test_code, q.id), :class => 'btn btn-default pull-right'
+            - if q.equations.any?
+              .equations
+                - q.equations.each do |e|
+                  .render-latex=e.text
+            - unless q.picture.path.nil?
+              %img.img-responsive.margin-bottom-10{:src=>q.picture, :alt=>'Image for question'}
+            .question-footer
+              %ul.icons.pull-left
+                - unless q.picture.path.nil?
+                  %li=fa_icon 'picture-o'
+                - unless q.reading.path.nil?
+                  %li=fa_icon 'volume-up'
+                %li
+                  =fa_icon 'clock-o'
+                  =friendly_time(q.max_time)
+
+      .text-center
+        = will_paginate @questions

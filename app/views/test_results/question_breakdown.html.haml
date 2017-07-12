@@ -1,0 +1,71 @@
+- content_for :title, 'Question Breakdown'
+- content_for :stylesheets do
+  = stylesheet_link_tag 'katex', media: :all
+- content_for :javascripts do
+  = javascript_include_tag 'katex'
+
+.container.margin-bottom-20
+  %ul.breadcrumb
+    %li= link_to 'Tests', test_results_path
+    %li= link_to 'Results', show_per_question_path(@question.test.test_code)
+    %li= @question.test.test_code
+    %li.active= @question.id
+
+  - if @question.picture.path.present?
+    .container.margin-bottom-20.vertically-align
+      .col.col-md-4.text-center
+        %h2 #{@question.name}
+        - if @question.equations.any?
+          .equations
+            - @question.equations.each do |e|
+              .render-latex=e.text
+      .col.col-md-4.text-center
+        %img.img-responsive.margin-bottom-10{:src=>@question.picture, :alt=>'Image for question'}
+      .col.col-md-4.text-center
+        %p
+          %strong Curriculum Reference:
+          #{@question.curriculum_reference}
+        %p
+          %strong Time Limit:
+          #{@question.max_time}
+        %p
+          %strong Answer:
+          #{@question.correct_answer}
+  - else
+    .container.margin-bottom-20.vertically-align
+      .col.col-md-6.text-center
+        %h2 #{@question.name}
+        - if @question.equations.any?
+          .equations
+            - @question.equations.each do |e|
+              .render-latex=e.text
+      .col.col-md-6.text-center
+        %p
+          %strong Curriculum Reference:
+          #{@question.curriculum_reference}
+        %p
+          %strong Time Limit:
+          #{@question.max_time}
+        %p
+          %strong Answer:
+          #{@question.correct_answer}
+
+
+%h2
+  Results:
+
+= table_for @results, :sortable => true, :sort_url => question_breakdown_path, :table_html => { :class => 'table', :id => 'table_question_breakdown'},:data_row_html => { :class => lambda { cycle(@results.map {|r| r.correct_bool ? 'success' : 'danger'}) } } do |t|
+  - t.column 'Name',:header_column_html => {:class => 'col-md-2'} do |ut|
+    = link_to "#{ut.first_name} #{ut.last_name}", user_details_path(ut.user)
+  - t.column :answer, :sortable => false, :header_column_html => {:class => 'col-md-2'}
+  - t.column :correct_bool, :header_column_html => {:class => 'col-md-2'}, :header => "Result", :formatter => lambda { |result| result ? "Correct" : "Incorrect" }
+  - t.column :correct_bool, :header_column_html => {:class => 'col-md-2'}, :header => "Score", :formatter => lambda { |result| result ? "1" : "0" }
+  - t.column " ", :sortable => false, :header_column_html => {:class => 'col-md-2'},:header => "Change Result" do |ut|
+    - if ut.correct_bool
+      = link_to "Mark as Incorrect", answer_update_question_path(@question.test.test_code, @question.id, ut.id), :method => 'post', :class => 'btn btn-danger'
+    - else
+      = link_to "Mark as Correct", answer_update_question_path(@question.test.test_code, @question.id, ut.id), :method => 'post', :class => 'btn btn-success'
+  - t.column "Edited", :header_column_html => {:class => 'col-md-2 text-center'} do |ut|
+    - if ut.override
+      .text-center
+        = fa_icon "check"

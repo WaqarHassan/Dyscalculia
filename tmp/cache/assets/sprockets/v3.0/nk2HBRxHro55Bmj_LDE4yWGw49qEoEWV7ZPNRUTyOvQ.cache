@@ -1,0 +1,29 @@
+I"Ë(function() {
+  (function($) {
+    return $.ajaxModal = function(url, params) {
+      return $.get(url, params, function(data) {
+        var $modal;
+        $modal = $('#modalWindow').size() > 0 ? $('#modalWindow') : $('<div>').addClass('modal fade').attr('id', 'modalWindow');
+        $('body').append($modal.html(data).modal());
+        $(document).trigger('ajax-modal-show');
+        return $modal.on('hidden.bs.modal hidden', function(e) {
+          if (e.target === this) {
+            return $(this).remove();
+          }
+        }).on('shown.bs.modal shown', function(e) {
+          setTimeout("$('#modalWindow [autofocus]').first().focus()", 0);
+          return $(document).trigger('ajax-modal-shown');
+        });
+      });
+    };
+  })(jQuery);
+
+  $(function() {
+    return $(document.body).on('click', 'a.ajax-modal', function(e) {
+      e.preventDefault();
+      return $.ajaxModal($(this).attr('href'), $(this).data('params'));
+    });
+  });
+
+}).call(this);
+:ET

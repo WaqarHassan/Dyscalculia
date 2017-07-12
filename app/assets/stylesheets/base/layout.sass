@@ -1,0 +1,40 @@
+@import 'variables'
+
+html,body
+  height: 100%
+
+#wrap
+  position: relative
+  min-height: 100%
+  height: auto !important
+  margin: 0 auto -1*$footer-height
+  padding: 0 0 $footer-height
+
+
+#footer
+  height: $footer-height
+  padding-top: 20px
+  border-top: 1px solid $gray-lighter
+  font-size: 0.9*$font-size-base
+
+.col-centered
+  float: none
+  margin: 0 auto
+
+.vertically-align
+  display: table
+  table-layout: fixed
+  .col
+    display: table-cell
+    vertical-align: middle
+    float: none
+    height: 100%
+
+.navbar-left
+  @media screen and (max-width: 750px)
+    float: left
+    padding-left: 10px
+
+#bs-example-navbar-collapse-1
+  @media screen and (max-width: 750px)
+    clear: both

@@ -1,0 +1,39 @@
+- content_for :title, 'Sign up'
+- content_for :javascripts do
+  = javascript_include_tag 'pages/sign_up'
+
+.row
+  .col-md-6.col-centered
+    .panel.panel-default.margin-top-20
+      .panel-heading
+        %h2.panel-title Sign up
+      = simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+        =f.error_notification
+        .panel-body
+          .row
+            .col-md-6
+              = f.input :first_name, required: true, autofocus: true
+            .col-md-6
+              = f.input :last_name, required: true, autofocus: true
+          = f.input :gender, selected: 'Male', label: "Gender: ", :label_html => {:class => 'display-block' }, :collection =>  User.genders.map { |key, value| [key.humanize, key] }, :class=> 'form-control', required: true, autofocus: true
+          = f.input :email, required: false, autofocus: true
+          .row
+            .col-md-6
+              = f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length)
+            .col-md-6
+              = f.input :password_confirmation, required: true
+          .row
+            .col-md-12
+              = f.input :postcode, required: true, autofocus: true
+          .otherise{:'data-message' => 'Please state your diagnosis: ', :'data-select-message' => 'Other learning difference/disability? (Please state)'}
+            = f.input :diagnosis, :selected => User.default_diagnosis, :label => "Have you ever been diagnosed with: ", :label_html => {:class => 'display-block' }, :class => 'form-control', :collection => User.diagnosis.map { |key,value| [key, key] }, required: true, autofocus: true
+          = f.input :date_of_birth, start_year: Date.today.year - 110, end_year: Date.today.year, required: true, autofocus: true
+          #show-when-old
+            .otherise{:'data-message' => 'Please state your highest level of education: ', :'data-select-message' => 'Other (Please state)'}
+              = f.input :level_of_education, :selected => User.default_education, :label => "What is your highest level of education?: ", :label_html => {:class => 'display-block' }, :class => 'form-control', :collection => User.level_of_educations.map { |key, value| [key, key] }, required: false, autofocus: true
+            .otherise{:'data-message' => 'Please state your employment status: ', :'data-select-message' => 'Other (Please state)'}
+              = f.input :employment_status, :selected => User.default_employment, :label => "What is your employment status?: ", :label_html => {:class => 'display-block' }, :class => 'form-control', :collection => User.employment_statuses.map { |key, value| [key, key] }, required: false, autofocus: true
+
+        .panel-footer
+          = submit_button 'Sign up'
+          .margin-top-10= render "devise/shared/links"

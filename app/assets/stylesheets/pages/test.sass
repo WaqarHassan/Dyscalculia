@@ -1,0 +1,40 @@
+.question
+  padding: 40px 0
+
+.input-question
+  input
+    height: 60px
+    margin-bottom: 40px
+    font-size: 1.8em
+
+.answers
+  list-style: none
+  font-size: 1.5em
+  margin: 0
+  padding: 0
+  label
+    margin: 0 0 15px 0
+    border: 1px solid #ccc
+    padding: 10px 20px
+    font-weight: normal
+    width: calc(100%)
+    cursor: pointer
+    border-radius: 5px
+    background-color: white
+
+  input[type="radio"]
+    display: none
+    visibility: none
+
+  input[type="radio"]:checked + label
+    color: #fff
+    background-color: #31b0d5
+    border-color: #269abc
+    border-left-width: 5px
+    border-bottom-width: 5px
+    padding: 10px 20px 5px 15px
+
+#warning-message
+  display: inline-block
+  float: right
+  cursor: pointer

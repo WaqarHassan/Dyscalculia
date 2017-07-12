@@ -1,0 +1,1 @@
+git archive --format zip  --output ./vagrant-rails.zip master

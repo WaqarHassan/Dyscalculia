@@ -1,0 +1,33 @@
+en:
+  date:
+    formats:
+      default: "%d/%m/%Y"
+      full: "%a %e %B %Y"
+    order:
+      - !ruby/symbol day
+      - !ruby/symbol month
+      - !ruby/symbol year
+  errors:
+    messages:
+      extension_white_list_error: "cannot be %{extension}. Allowed types are %{allowed_types}"
+  number:
+    currency:
+      format:
+        unit: £
+  time:
+    formats:
+      compact: "%d/%m/%y at %H:%M"
+      full: "%a %e %B %Y at %H:%M"
+      short: "%d/%m/%Y %H:%M"
+      time_24: "%H:%M"
+
+  activerecord:
+    attributes:
+      user_test:
+        user_id: "You"
+    errors:
+      models:
+        user_test:
+          attributes:
+            user_id:
+              taken: "have already enrolled on this test. Click 'home' to view your tests or enrol on another test"

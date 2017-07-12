@@ -1,0 +1,46 @@
+= render 'validation_error_message'
+%form.container#question-form{:method => "post", :enctype => "multipart/form-data"}
+  .row
+    .col-md-7
+      = hidden_field_tag :authenticity_token, form_authenticity_token
+      .row.margin-bottom-20#top-options
+        .col-md-8
+          %label{:for => 'curriculum-reference'} Curriculum reference
+          .row
+            .col-md-12
+              %input.form-control#curriculum-reference{:type => "text", :value => @curriculum_reference, :name => "question[curriculum_reference]"}
+        .col-md-4
+          %label{:for => 'time-allocation'} Max time allocated
+          .row
+            .col-md-12
+              .time-picker
+                %input.form-control#time-allocation{:type => "text", :name => "question[max_time]", :value => @max_time || 0}
+
+      .row.form-group
+        %label{:for => 'question-text'} Question text
+        .input-helper.margin-bottom-20
+          %input.form-control#question-text{:type => "text", :value => @question_text, :name => "question[question_text]"}
+          %ul.inputs
+            %li θ
+            %li π
+            %li °
+        %label{:for => 'question-text'} Equations (Optional)
+        = render 'equation_module'
+
+        %label Question type:
+        .margin-bottom-20#choices
+          .btn.btn-default{'data-type' => 'InputQuestion'}
+            Input
+          .btn.btn-default{'data-type' => 'MultipleChoiceQuestion'}
+            Multiple Choice
+        = render 'question_type_module'
+
+    .col-md-4#right-side
+
+      .row
+        .col-md-12.col-sm-6
+          %label{:for => ''} Question reading (Optional)
+          = render 'audio_uploader'
+        .col-md-12.col-sm-6
+          %label{:for => ''} Question Picture (Optional)
+          = render 'click_uploader'

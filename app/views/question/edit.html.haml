@@ -1,0 +1,91 @@
+- content_for :title, 'Editing question'
+- content_for :stylesheets do
+  = stylesheet_link_tag 'mathquill', media: :all
+  = stylesheet_link_tag 'modules/equation', media: :all
+  = stylesheet_link_tag 'pages/edit_question', media: :all
+- content_for :javascripts do
+  = javascript_include_tag 'modules/audio_uploader'
+  = javascript_include_tag 'pages/edit_question'
+
+%ul.breadcrumb
+  %li= link_to 'Tests', test_results_path
+  %li= link_to @test_code, edit_test_path(@test_code)
+  %li.active=@question_no
+
+.row.page-header
+  .col-md-6
+    %h1
+      Q#{@question_no}
+      %small
+        Edit Question
+        %span#question-type-header
+          - front_end_template "header-template" do
+            {{#multiple_choice}}
+            %strong.question-type (Multiple Choice)
+            {{/multiple_choice}}
+
+            {{#input_question}}
+            %strong.question-type (Input)
+            {{/input_question}}
+
+  .col-md-6.margin-top-20.margin-bottom-10
+    .row
+      %ul.nav.navbar-nav.navbar-right.margin-right-15
+        %li
+          .btn-group.margin-right-5
+            = link_to edit_test_path(@test_code), {:class => "btn btn-default"} do
+              Stop Editing
+        %li.dropdown
+          %button#dropdownMenu1.btn.btn-default.dropdown-toggle{"aria-expanded" => "true", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
+            More
+            %span.caret
+          %ul.dropdown-menu{"aria-labelledby" => "dropdownMenu1"}
+            %li
+              = link_to question_preview_path(@test_code, @question.id) do
+                Preview Question
+            %li
+              = link_to delete_question_path(@test_code, @question_no), :method => 'delete', :data => {:message => 'Are you sure?'}, :id => 'delete' do
+                Delete Question
+
+        %li
+          %span#save-button-location.margin-left-20{'data-dirty' => "#{!@validation_errors.blank?}"}
+
+        - front_end_template 'save_button_template' do
+          {{#clean}}
+          %button.disabled.btn.btn-default{:disabled => "disabled"} All changes saved
+          {{/clean}}
+
+          {{#dirty}}
+          .btn-group
+            %a.btn.btn-danger#cancel{:href => request.path, "data-message" => "Are you sure you want to cancel change? This action can not be undone."} Cancel Changes
+            %button.btn.btn-success#save Save!
+          {{/dirty}}
+
+          {{#saving}}
+          %button.btn.btn-default.disabled{:disabled => "disabled"}
+            = render_loader
+            Saving
+          {{/saving}}
+
+          {{#canceling}}
+          %button.btn.btn-default.disabled{:disabled => "disabled"}
+            = render_loader
+            Canceling changes
+          {{/canceling}}
+
+= render 'question_module'
+%nav
+  %ul.pager
+    - unless @is_first_question
+      %li
+        = link_to edit_question_path(@test_code, @question_no - 1), :class => 'previous btn btn-fixed-lg' do
+          %span.glyphicon.glyphicon-chevron-left
+          Previous
+    %li
+      - if @is_last_question
+        = link_to new_question_path, :class => "next btn btn-fixed-lg" do
+          Create new
+      - else
+        = link_to edit_question_path(@test_code, @question_no + 1), :class => "next btn btn-fixed-lg" do
+          %span.glyphicon.glyphicon-chevron-right
+          Next

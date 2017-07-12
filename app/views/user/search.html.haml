@@ -1,0 +1,47 @@
+- content_for :title, 'Search Users'
+
+.page-header
+  %h1
+    %small Search Users
+
+%p
+  %b Showing results for:
+  = @q_params.select{ |k,v| v.present? }.map{ |k,v| "#{k.humanize}: #{v.humanize}"}.to_sentence
+
+.params.hidden.margin-bottom-25
+  = simple_form_for :user, :url => search_users_results_path, :method => 'get' do |f|
+    = f.input :first_name, :placeholder => 'Enter a first name...', :input_html => {value: params[:user][:first_name]}
+    = f.input :last_name, :placeholder => 'Enter a last name...', :input_html => {value: params[:user][:last_name]}
+    = f.input :email, :placeholder => 'Enter an email adress...', :input_html => {value: params[:user][:email]}
+    -# = f.input :date_of_birth, :include_blank => "Do not specify", :selected => @selected_age, :class => 'form-control', :prompt => "Do not specify", :collection => ["< 5", "6-10", "11-17", "18+"]
+    = f.input :level_of_education, :include_blank => "Do not specify", :selected => @selected_level_of_education, :class => 'form-control', :collection => User.level_of_educations.map { |key, value| [key.humanize, key] }
+    = f.input :gender, :include_blank => "Do not specify", :selected => @selected_gender, :class => 'form-control', :collection => User.genders.map { |key, value| [key.humanize, key] }
+    = f.input :employment_status, :include_blank => "Do not specify", :selected => @selected_employment_status, :class => 'form-control', :collection => User.employment_statuses.map { |key, value| [key.humanize, key] }
+    = f.input :diagnosis, :include_blank => "Do not specify", :selected => @selected_diagnosis, :class => 'form-control', :collection => User.diagnosis.map { |key, value| [key.humanize, key] }
+    = f.submit :value => 'Search', :class => 'btn btn-primary'
+
+
+= link_to "Adjust Search Parameters", search_users_path, :class => 'btn btn-primary', :'data-show-element' => '.params'
+= link_to "Reset Search", search_users_path, :class => 'btn btn-default'
+- if @tests.any?
+  .tests
+    %h2
+      %small Filter tests
+    - @tests.each do |t|
+      - if t.id == params[:test_id].to_i
+        = link_to t.title, url_for(params.tap { |p| p.delete(:test_id)}), :class => 'btn btn-primary'
+      - else
+        = link_to t.title, url_for(params.merge(:test_id => t.id)), :class => 'btn btn-default'
+
+
+- if @test.present?
+  - if @results.any?
+    = render 'show_users_filter_test'
+  - else
+    No results for your search query.
+- else
+  .margin-top-20
+    -if @results.any?
+      = render 'show_users'
+    -else
+      No results for your search query.

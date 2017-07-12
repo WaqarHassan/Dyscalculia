@@ -1,0 +1,68 @@
+- content_for :title, 'New question'
+- content_for :stylesheets do
+  = stylesheet_link_tag 'mathquill', media: :all
+  = stylesheet_link_tag 'pages/edit_question', media: :all
+  = stylesheet_link_tag 'modules/equation', media: :all
+- content_for :javascripts do
+  = javascript_include_tag 'pages/edit_question', media: :all
+  = javascript_include_tag 'modules/audio_uploader', media: :all
+
+%ul.breadcrumb
+  %li= link_to 'Tests', test_results_path
+  %li= link_to @test_code, edit_test_path(@test_code)
+  %li.active=@question_no
+
+.row.page-header
+  .col-md-6
+    %h1
+      Q#{@question_no}
+      %small
+        Create Question
+        %span#question-type-header
+          - front_end_template "header-template" do
+            {{#multiple_choice}}
+            %strong.question-type (Multiple Choice)
+            {{/multiple_choice}}
+
+            {{#input_question}}
+            %strong.question-type (Input)
+            {{/input_question}}
+
+  .col-md-6.margin-top-20.margin-bottom-10
+    .row
+      %ul.nav.navbar-nav.navbar-right.margin-right-15
+        %li
+          .btn-group.margin-right-5
+            = link_to edit_test_path(@test_code), {:class => "btn btn-default"} do
+              Stop Editing
+        %li
+          %span#save-button-location.margin-left-20{'data-dirty' => "#{!@validation_errors.blank?}"}
+
+        - front_end_template 'save_button_template' do
+
+          {{#dirty}}
+          .btn-group
+            %a.btn.btn-danger#cancel{:href => request.path, "data-message" => "Are you sure you want to cancel change? This action can not be undone."} Cancel Changes
+            %button.btn.btn-success#save Save!
+          {{/dirty}}
+
+          {{#saving}}
+          %button.btn.btn-default.disabled{:disabled => "disabled"}
+            = render_loader
+            Saving
+          {{/saving}}
+
+          {{#canceling}}
+          %button.btn.btn-default.disabled{:disabled => "disabled"}
+            = render_loader
+            Canceling changes
+          {{/canceling}}
+
+
+= render 'question_module'
+%nav
+  %ul.pager
+    %li
+      = link_to :back, :class => 'previous btn btn-default btn-fixed-lg' do
+        = fa_icon 'times'
+        Don't create

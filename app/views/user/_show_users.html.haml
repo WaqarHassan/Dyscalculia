@@ -1,0 +1,15 @@
+%h1 Users
+= table_for @users, :sortable => true, :sort_url => search_users_results_path, :table_html => { :class => 'table'} do |t|
+  - t.column :first_name
+  - t.column :last_name
+  - t.column :email
+  - t.column :gender, :formatter => lambda { |d| d.humanize}
+  - t.column :date_of_birth
+  - t.column :level_of_education
+  - t.column :diagnosis
+  - t.column :employment_status
+  - t.column ' ' do |ut|
+    = link_to "View Profile", user_details_path(ut.id), :class => 'btn btn-primary'
+
+-# = @users.each do |a|
+-#   %h3= a.age

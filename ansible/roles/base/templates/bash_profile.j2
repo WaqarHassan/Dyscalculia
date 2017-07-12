@@ -1,0 +1,18 @@
+# {{ ansible_managed }}
+
+if [ -f ~/.bashrc ]; then
+  . ~/.bashrc
+fi
+
+if [ -d {{ profile_d_path }} ]; then
+  for i in {{ profile_d_path }}/*.sh; do
+    if [ -r $i ]; then
+      . $i
+    fi
+  done
+  unset i
+fi
+
+if [ ! -z "$PS1" ]; then
+  eval `keychain -q --eval $(grep RSA $HOME/.ssh/* | cut -d: -f1 | sort | uniq)`
+fi

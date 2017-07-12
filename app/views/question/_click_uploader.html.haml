@@ -1,0 +1,38 @@
+.click-uploader{"data-image-src" => @question_picture}
+  -# Due to security reasons, value of file input cannot be set through js,
+  -# So has to be handled separately and can't be used in normal templating
+  %input.hidden{:type => 'file', :name => 'question[question_picture]'}
+  .inner
+    - front_end_template "before-upload-template" do
+      .upload-message
+        Click to upload an image.
+
+
+    - front_end_template "loading-image-template" do
+      .loading-image
+        = render_loader
+
+    - front_end_template "loading-error-template" do
+      .image-options
+        .btn-group
+          .btn.btn-danger.remove-image
+            %i.fa.fa-trash
+            Remove
+          .btn.btn-default.change-image
+            %i.fa.fa-file
+            Change
+      .upload-message.image-fail
+        %b Cannot preview image!
+
+    - front_end_template "previewing-template" do
+      %input{:type => 'hidden', :name => 'question[picture_cache]', :value => @picture_cache}
+      .image-options
+        .btn-group
+          .btn.btn-danger.remove-image
+            %i.fa.fa-trash
+            Remove
+          .btn.btn-default.change-image
+            %i.fa.fa-file
+            Change
+      .preview
+        %img{:src => "{{uploaded_image}}", :alt => "User uploaded image for question"}

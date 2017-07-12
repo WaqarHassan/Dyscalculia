@@ -1,0 +1,44 @@
+.col-md-6.margin-top-20.margin-bottom-10
+  .row
+    %ul.nav.navbar-nav.navbar-right.margin-right-15
+      %li
+        .btn-group.margin-right-5
+          = link_to edit_test_path(@test_code), {:class => "btn btn-default"} do
+            Stop Editing
+      %li.dropdown
+        %button#dropdownMenu1.btn.btn-default.dropdown-toggle{"aria-expanded" => "true", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
+          More
+          %span.caret
+        %ul.dropdown-menu{"aria-labelledby" => "dropdownMenu1"}
+          %li
+            = link_to '#' do
+              Preview Question
+          %li
+            = link_to delete_question_path(@test_code, @question_no), :method => 'delete', :data => {:message => 'Are you sure?'}, :id => 'delete' do
+              Delete Question
+
+      %li
+        %span#save-button-location.margin-left-20{'data-dirty' => "#{!@validation_errors.blank?}"}
+
+      - front_end_template 'save_button_template' do
+        {{#clean}}
+        %button.disabled.btn.btn-default{:disabled => "disabled"} All changes saved
+        {{/clean}}
+
+        {{#dirty}}
+        .btn-group
+          %a.btn.btn-danger#cancel{:href => request.path, "data-message" => "Are you sure you want to cancel change? This action can not be undone."} Cancel Changes
+          %button.btn.btn-success#save Save!
+        {{/dirty}}
+
+        {{#saving}}
+        %button.btn.btn-default.disabled{:disabled => "disabled"}
+          = render_loader
+          Saving
+        {{/saving}}
+
+        {{#canceling}}
+        %button.btn.btn-default.disabled{:disabled => "disabled"}
+          = render_loader
+          Canceling changes
+        {{/canceling}}

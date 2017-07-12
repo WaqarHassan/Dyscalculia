@@ -1,0 +1,29 @@
+I"Ì(function() {
+  (function($) {
+    return $.flashAlert = function(message, type, timeout) {
+      var $alert, $dismissLink;
+      if (timeout == null) {
+        timeout = 6000;
+      }
+      $dismissLink = $('<a href="#" title="Hide this message" data-dismiss="alert" class="dismiss-flash"></a>').html('Dismiss');
+      $alert = $('<div>').addClass("alert fade in " + type).append(message).append($dismissLink);
+      if ($('.flash-messages .alert').size() > 2) {
+        clearTimeout($('.flash-messages .alert:last').remove().data('timeout'));
+      }
+      $('.flash-messages').prepend($alert);
+      $alert.data('timeout', setTimeout(function() {
+        return $alert.alert('close');
+      }, timeout));
+      return true;
+    };
+  })(jQuery);
+
+  $(function() {
+    if ($('.flash-messages .alert').size() > 0) {
+      $('.flash-messages .alert').addClass('in');
+      return setTimeout("$('.flash-messages .alert').alert('close');", 6000);
+    }
+  });
+
+}).call(this);
+:ET

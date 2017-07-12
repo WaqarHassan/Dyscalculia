@@ -1,0 +1,12 @@
+.equation-module.margin-bottom-20{'data-equations' => @equations.to_json}
+  - front_end_template 'equation-template' do
+    .equation{'data-name' => 'question[equations[]'}
+      = hidden_field_tag 'question[equations[]', '{{text}}', {:class => 'equation-value'}
+      .text-field
+        {{text}}
+      .btn.btn-danger{"data-action-delete" => "{{id}}"}
+        = fa_icon 'trash'
+        Remove
+  .equations
+  .button.btn.btn-success{"data-action-add" => "true"}
+    Add Equations

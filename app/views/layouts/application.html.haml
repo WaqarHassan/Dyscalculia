@@ -1,0 +1,85 @@
+!!!
+%html
+  %head
+    %title Dyscalculia - #{content_for(:title)}
+    %meta{ name: "viewport", content: "width=device-width, initial-scale=1.0" }
+    %meta{ :'http-equiv' => 'X-UA-Compatible', content: 'IE=edge' }
+    = stylesheet_link_tag "application", media: :all
+    -# Page specific stylesheets
+    = yield :stylesheets
+    = javascript_include_tag "application"
+    = yield :javascripts
+    = favicon_link_tag '/favicon.ico'
+    = csrf_meta_tags
+
+  %body{ class: "#{environment_notice_body_class} #{content_for(:body_class)}"}
+    -#
+    = render 'layouts/environment_notice'
+    .flash-messages
+      - flash.each do |name, msg|
+        - next unless name == 'alert' || name == 'notice'
+        .alert.fade.in
+          .container
+            - if name == 'notice'
+              = fa_icon('check', class: 'flash-success')
+            - else
+              = fa_icon('warning', class: 'flash-error')
+            = msg
+            %a{ href: '#', title: 'Hide this message', data: { dismiss: :alert } } Dismiss
+
+
+    %noscript
+      .warning-page-cover
+        .alert.alert-info
+          %h2 Sorry, it appears that you are using a web browser without JavaScript which prevents us offering you a rich online experience.
+          %p Please enable JavaScript or use a different web browser, or alternatively contact the CiCS Helpdesk for assistance.
+
+    #wrap
+
+      %nav.navbar.navbar-default
+        .div
+          %ul.nav.navbar-nav.navbar-left
+            = navbar_link_to :root, title: "Go to the home page", identifier: :home do
+              = fa_icon 'home'
+              Home
+
+          %button.navbar-toggle.collapsed{"aria-expanded" => "false", "data-target" => "#bs-example-navbar-collapse-1", "data-toggle" => "collapse", :type => "button"}
+            %span.sr-only Toggle navigation
+            %span.icon-bar
+            %span.icon-bar
+            %span.icon-bar
+
+          / Collect the nav links, forms, and other content for toggling
+          #bs-example-navbar-collapse-1.collapse.navbar-collapse
+            %ul.nav.navbar-nav.navbar-right
+              - if current_user.admin?
+                %li
+                  = link_to admin_overview_path, title: "Admin" do
+                    = fa_icon 'tasks'
+                    Admin Overview
+              %li
+                = link_to enrol_path, title: "Enrol" do
+                  = fa_icon 'list-alt'
+                  Enrol on a Test
+              %li.dropdown
+                = link_to '#', data: { toggle: :dropdown }, class: 'dropdown-toggle' do
+                  = fa_icon 'user', text: current_user.email
+                  %b.caret
+                %ul.dropdown-menu
+                  %li
+                    = link_to account_details_path, title: "Account details" do
+                      %i.fa.fa-user
+                      Account details
+                  %li
+                    = link_to destroy_user_session_path, method: :delete, title: "Log out of the system" do
+                      %i.fa.fa-sign-out
+                      Log out
+      #main-container.container
+
+        = yield
+
+    %footer#footer
+      .container
+        %p
+          &copy;#{Date.today.year}
+          = link_to 'epiGenesys', 'https://www.epigenesys.org.uk', target: '_blank', title: 'Goto the epiGenesys website'

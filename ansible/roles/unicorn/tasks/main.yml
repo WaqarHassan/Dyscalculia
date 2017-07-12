@@ -1,0 +1,26 @@
+---
+  #windows hack
+  #------------
+- name: Configure unicorn
+  template: src=unicorn.rb.j2 dest=/tmp/unicorn.rb
+
+- name: Configure unicorn
+  command: cp /tmp/unicorn.rb {{ unicorn_config_path }}
+  #------------
+
+- name: Install unicorn
+  command: /bin/bash -l -c 'gem install unicorn --no-ri --no-rdoc' chdir={{ app_path }}
+  sudo: yes
+
+- name: Create upstart config
+  template: src=upstart.conf.j2 dest=/etc/init/{{ unicorn_app_name }}.conf
+  notify: restart application
+
+  #windows hack
+  #------------
+- name: Create upstart config
+  template: src=upstart.conf.j2 dest=/tmp/upstart.conf
+
+- name: Create upstart config
+  command: cp /tmp/upstart.conf /etc/init/{{ unicorn_app_name }}.conf
+  #------------

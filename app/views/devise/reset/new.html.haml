@@ -1,0 +1,11 @@
+= form_for(@user, :url => { :action => "update_password" } ) do |f|
+  .field
+    = f.label :password, "Password"
+    %br/
+    = f.password_field :password, :autocomplete => "off"
+  .field
+    = f.label :password_confirmation
+    %br/
+    = f.password_field :password_confirmation
+  .action_container
+    = f.submit

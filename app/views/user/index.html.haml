@@ -1,0 +1,22 @@
+- content_for :title, 'Search Users'
+
+.page-header
+  %h1
+    %small Search Users
+
+= simple_form_for @user, :url => search_users_results_path, :method => 'get' do |f|
+  = f.input :first_name, :placeholder => 'Enter a first name...'
+  = f.input :last_name, :placeholder => 'Enter a last name...'
+  = f.input :email, :placeholder => 'Enter an email adress...'
+  -# = f.input :date_of_birth, :prompt => "Do not specify", :collection => ["< 5", "6-10", "11-17", "18+"]
+  = f.input :level_of_education, :prompt => "Do not specify", :class => 'form-control', :collection => User.level_of_educations.map { |key, value| [key.humanize, key] }, :selected => params[:level_of_education]
+  = f.input :gender, :prompt => "Do not specify", :collection => User.genders.map { |key, value| [key.humanize, key] }, :selected => params[:genders]
+  = f.input :employment_status, :prompt => "Do not specify", :collection => User.employment_statuses.map { |key, value| [key.humanize, key] }, :selected => params[:level_of_education]
+  = f.input :diagnosis, :prompt => "Do not specify", :collection => User.diagnosis.map { |key, value| [key.humanize, key] }, :selected => params[:level_of_education]
+  = f.submit :value => 'Search', :class => 'btn btn-primary'
+
+:javascript
+  $(function() {
+  // Hacky fix for simple_form not allowing adding a class to the select
+   $('select').addClass('form-control');
+  });

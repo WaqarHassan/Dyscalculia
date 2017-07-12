@@ -1,0 +1,46 @@
+#question-module{"data-answers" => @answers.to_json, "data-question-type" => @question_type}
+  - front_end_template "multi-answer-node-template" do
+    .input-group.margin-bottom-10{:id => '{{index}}'}
+      %span.input-group-addon {{letter}}
+      %input.form-control.answer-input{:type => "text", :name => "question[answers[{{index}}][answer_text]]", :autofocus => "autofocus", :placeholder => "Please enter an answer", :value => "{{answer_text}}"}
+      %span.input-group-btn
+        .btn.btn-danger{"data-action-delete" => "{{index}}"}
+          %span.fa.fa-trash
+          Remove
+        {{#is_answer}}
+        %input{:type => "hidden", :name => "question[answers[{{index}}][is_answer]]", :value => "true"}
+        .btn.btn-default.btn-fixed-sm.fill.btn-success{"data-action-set-as-not-answer" => "{{index}}"}
+          %span.glyphicon.glyphicon-ok
+        {{/is_answer}}
+
+        {{^is_answer}}
+        %input{:class => "hidden", :type => "hidden", :name => "question[answers[{{index}}][is_answer]]", :value => "false"}
+        .btn.btn-default.btn-fixed-lg{"data-action-set-as-answer" => "{{index}}"}
+          Mark as answer
+        {{/is_answer}}
+
+  - front_end_template "multiple-choice-template" do
+    = hidden_field_tag 'question[question_type]', 'MultipleChoiceQuestion'
+    #multi-answer-module
+      %label Choices
+      #answers.sortable
+        {{#answers}}{{>answer_partial}}{{/answers}}
+      .btn.btn-success{"data-action-add" => "last"}
+        Add Answer
+
+  - front_end_template "input-template" do
+    = hidden_field_tag 'question[question_type]', 'InputQuestion'
+    #input-answer-module
+      %label Accepted Answers
+      #answers
+        {{#answers}}{{>answer_partial}}{{/answers}}
+      .btn.btn-success{"data-action-add" => "last"}
+        Add Answer
+  - front_end_template "input-answer-node-template" do
+    .input-group.margin-bottom-10
+      %input{:type => "hidden", :name => "question[answers[{{index}}][is_answer]]", :value => "true"}
+      %input.form-control.answer-input{:type => "text", :name => "question[answers[{{index}}][answer_text]]", :autofocus => "autofocus", :placeholder => "Please enter an answer", :value => "{{answer_text}}"}
+      %span.input-group-btn
+        .btn.btn-danger{"data-action-delete" => "{{index}}"}
+          %span.fa.fa-trash
+          Remove

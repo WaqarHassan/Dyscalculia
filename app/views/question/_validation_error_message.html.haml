@@ -1,0 +1,9 @@
+- unless @validation_errors.blank?
+  .alert.alert-danger{:role => "alert"}
+    %a.close{"data-dismiss" => "alert"} ×
+    %p
+      %b
+        Changes could not be saved!
+    %ul.list-unstyled
+      - @validation_errors.each do |e|
+        %li.margin-top-10=e

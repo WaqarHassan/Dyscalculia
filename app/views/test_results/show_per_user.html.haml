@@ -1,0 +1,40 @@
+- content_for :title, 'User Answers'
+
+%ul.breadcrumb
+  %li= link_to 'Tests', test_results_path
+  %li.active Results
+  %li.active= @test_code
+
+.page-header.margin-top-5
+  %h1
+    %small
+      Results per user for
+      %b #{@test.title}
+
+
+= link_to 'Results per User', show_per_user_path, :class => 'btn btn-primary'
+= link_to 'Results per Question', show_per_question_path, :class => 'btn btn-default'
+.div.pull-right
+  = link_to "Preview Test", preview_test_path(@test_code), :class => 'btn btn-default'
+  = link_to show_per_user_path(:format => :xlsx), :class => 'btn btn-default' do
+    .glyphicon.glyphicon-download-alt
+    Download Results
+
+
+
+- if @results.empty?
+  %p.margin-bottom-25.margin-top-25
+    There has not been any response for this test yet.
+-else
+  = table_for @results, :sortable => true, :sort_url => show_per_user_path, :table_html => { :class => 'table', :id => 'table_users'} do |t|
+    - t.column 'Name', :class => 'name' do |ut|
+      = link_to "#{ut.first_name} #{ut.last_name}", user_details_path(ut.user_id)
+    - t.column :started_at, :formatter => lambda { |d| format_value friendly_date(d) }
+    - t.column :completed_at, :formatter => lambda { |d| format_value friendly_date(d) }
+    - t.column :time_taken, :formatter => lambda { |t| friendly_time(t/1000.0) }
+    - t.column :score
+    - t.column " " do |ut|
+      - if ut.started
+        = link_to "View Answers", user_result_path(@test_code, ut.user_id), :class => 'btn btn-primary'
+      -else
+        = link_to "No Answers", '#', :class => 'btn btn-default disabled'

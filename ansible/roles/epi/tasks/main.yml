@@ -1,0 +1,45 @@
+---
+# - name: example command that runs ls
+#   command: /bin/bash -c 'ls'
+  
+- name: add enviroment flag for rails template
+  lineinfile: dest=/etc/environment state=present create=yes line='VAGRANT=true'
+
+- name: configure guest to use google dns before host dns
+  lineinfile: dest=/etc/dhcp/dhclient.conf state=present line='interface "eth0" { prepend domain-name-servers 8.8.8.8; }'
+
+- name: restart networking
+  command: /bin/bash -c 'ifdown eth0 && ifup eth0'
+  sudo_user: root
+
+# install phantomjs
+- name: add repo
+  apt_repository: repo='deb http://ppa.launchpad.net/tanguy-patte/phantomjs/ubuntu trusty main' state=present
+
+- name: add key
+  apt_key: id=D6243D66 url=http://keyserver.ubuntu.com:11371/pks/lookup?op=get&search=0x9CE6C37ED6243D66 state=present
+
+- name: install phantomjs
+  apt: name=phantomjs update_cache=yes
+
+# want to add the users current ssh keys and keep the vagrant authorized key
+- name: copy vagrant authorized_key
+  command: /bin/bash -c 'cp -f /home/vagrant/.ssh/authorized_keys /home/vagrant/.ssh/.vagrant_authorized_keys'
+
+- name: ssh keys
+  command: /bin/bash -c 'cp -rf /home/vagrant/.host_home/.ssh/* /home/vagrant/.ssh/'
+
+- name: restore vagrant authorized key
+  command: /bin/bash -c 'cat /home/vagrant/.ssh/.vagrant_authorized_keys >> /home/vagrant/.ssh/authorized_keys'
+  
+- name: set owner and permissions
+  file: path=/home/vagrant/.ssh owner=vagrant group=vagrant mode=400 recurse=yes state=directory
+  
+- name: set owner and permissions
+  file: path=/home/vagrant/.ssh owner=vagrant group=vagrant mode=500 recurse=no state=directory
+
+- name: copy .gitconfig
+  command: /bin/bash -c 'cp /home/vagrant/.host_home/.gitconfig /home/vagrant/.gitconfig'
+
+- name: set owner and permissions
+  file: path=/home/vagrant/.gitconfig owner=vagrant group=vagrant mode=400

@@ -1,0 +1,25 @@
+- content_for :title, 'Create Test'
+- content_for :stylesheets do
+  = stylesheet_link_tag 'katex', media: :all
+- content_for :javascripts do
+  = javascript_include_tag 'katex'
+
+%ul.breadcrumb
+  %li= link_to 'Tests', test_results_path
+  %li.selected New Test
+
+.col.col-md-5.col-centered.padding-10
+  %h1 Create a new Test
+  = simple_form_for @test, :url => new_test_path do |f|
+    = f.input :title
+    %strong Duration:
+    .form-inline.margin-bottom-15
+      = f.select :duration, (1..20)
+      Days
+    = f.button :submit, :class => 'btn btn-success'
+
+:javascript
+  $(function() {
+  // Hacky fix for simple_form not allowing adding a class to the select
+    $('select').addClass('form-control');
+  });

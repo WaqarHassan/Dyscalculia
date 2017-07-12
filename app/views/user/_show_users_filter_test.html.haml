@@ -1,0 +1,21 @@
+.div
+  = link_to "#{search_users_test_results_path}.xlsx?#{params.to_query}", :class => 'btn btn-default pull-right' do
+    .glyphicon.glyphicon-download-alt
+    Download Results
+  %h1 Users filtered with test
+
+= table_for @results, :sortable => true, :sort_url => search_users_test_results_path(@test.id), :table_html => { :class => 'table'} do |t|
+  - t.column :first_name
+  - t.column :last_name
+  - t.column :email
+  -# - t.column :age
+  - t.column :gender, :formatter => lambda { |d| d.humanize}
+  - t.column :date_of_birth
+  - t.column :level_of_education
+  - t.column :time_taken, :formatter => lambda { |t| friendly_time(t/1000.0) }
+  - t.column :score
+  - t.column " " do |ut|
+    - if ut.user_test.completed?
+      = link_to "View Answers", user_result_path(@test.test_code, ut.user_id), :class => 'btn btn-primary'
+    -else
+      = link_to "No Answers", '#', :class => 'btn btn-default disabled'

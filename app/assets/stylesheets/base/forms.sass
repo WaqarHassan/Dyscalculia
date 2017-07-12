@@ -1,0 +1,101 @@
+.control-label
+  &.radio_buttons, &.check_boxes
+    margin-bottom: 0
+  &.inline_radio_buttons, &.inline_check_boxes
+    display: block
+    margin-bottom: 8px
+
+
+.btn
+  &.btn-fixed-sm
+    width: 50px
+    &.fill
+      margin-right: 100px
+
+  &.btn-fixed-md
+    width: 120px
+    &.fill
+      margin-right: 30px
+
+  &.btn-fixed-lg
+    width: 150px
+
+  &.pretend:hover
+    cursor: inherit
+
+.click-uploader
+  .loading-image
+    text-align: center
+    height: 250px
+    width: 340px
+    position: relative
+    img
+      height: 100px
+      width: auto
+      position: absolute
+      top: 50%
+      margin-top: -50px
+
+  .inner
+    overflow: hidden
+    &:hover .image-options
+      top: 5px
+    &.previewing
+      border: none
+      cursor: default
+
+    border: 1px dashed #ccc
+    height: 250px
+    width: 340px
+    margin: auto
+    text-align: center
+    cursor: pointer
+    // overflow: hidden
+    position: relative
+
+    .image-options
+      transition: top 0.3s ease-in-out
+
+      position: absolute
+      right: 5px
+      top: -50px
+      z-index: 2000
+
+    &hover
+      position: absolute
+      top: 0
+      bottom: 0
+    img
+      max-height: 240px
+      max-width: 340px
+      width: auto
+
+    .upload-message
+      &.image-fail
+        background: #F5F5F5
+
+      line-height: 250px
+      text-align: center
+
+button .loader
+  height: 20px
+  margin-left: 2px
+  width: auto
+
+.input-helper
+  position: relative
+
+  .inputs
+    position: absolute
+    right: 0
+    top: -32px
+    list-style: none
+    margin: 0
+    padding: 0
+    li
+      display: inline-block
+      padding: 2px 7px
+      margin: 0 2px
+      cursor: pointer
+      border-radius: 2px
+      background-color: #ccc

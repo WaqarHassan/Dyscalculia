@@ -1,0 +1,62 @@
+- content_for :title, @title
+.page-header
+  %h1
+    Diagnostic Test
+  %h2.h3 #{@title}
+.col-md-12
+  %h2.h3 Rules
+
+.col-md-12
+  %p
+    Welcome to the
+    %b dyscalculia assessment.
+    Please be sure that you have read and understood the rules of the test before you start.
+  %ol.styled-list
+    %li
+      %span.number 1
+      %span.text
+        This is
+        %b not an exam!
+        All I ask is that you do your best and try to enjoy yourself
+    %li
+      %span.number 2
+      %span.text
+        Please
+        %b don’t guess answers
+        – if you don’t know the answer, please click the
+        %b “I don’t know”
+        button. It is very important that I know exactly what you can and can’t do so that we can help you the best we can.
+    %li
+      %span.number 3
+      %span.text
+        Each question
+        %b has a time limit.
+        Don’t worry – you will have plenty of time to complete the question, and you will be given the option of extending your time if you haven’t quite finished.
+    %li
+      %span.number 4
+      %span.text
+        You
+        %b may use a pen and paper
+        to work out your answers.
+    %li
+      %span.number 5
+      %span.text
+        If you would prefer to hear your questions out loud, simply click the
+        %b speaker icon.
+    %li
+      %span.number 6
+      %span.text When your test is complete, you may log out. Your results will be sent to the email address you gave when you registered.
+
+
+.col-md-12.margin-bottom-20
+  %ul.list-group.margin-top-30
+    %li.list-group-item
+      %strong Number of questions:
+      = @question_count
+    %li.list-group-item
+      %strong Days to complete:
+      #{@question_duration_days} days
+
+
+  = link_to start_test_path(@test_code), class: "btn btn-primary pull-right", title: "Start the test!" do
+    Start Test!

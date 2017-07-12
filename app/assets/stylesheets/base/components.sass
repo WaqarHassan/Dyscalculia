@@ -1,0 +1,116 @@
+.audio-speaker
+  display: inline-block
+  overflow: visible
+  audio
+    display: none
+  .icon
+    padding: 5px
+    cursor: pointer
+
+.questions
+  margin: 0
+  margin-bottom: 20px
+  padding: 0
+  list-style: none
+
+  .question
+    padding: 10px
+    border: 1px solid #ccc
+    margin: 0 0 20px 0
+    border-radius: 5px
+
+  .question-no
+    display: inline-block
+    width: 40px
+    font-size: 1.6em
+    font-weight: bold
+
+  .icons
+    margin: 0
+    padding: 0
+    li
+      display: inline-block
+      padding: 10px 5px
+
+.time-picker
+  position: relative
+  >input
+    color: #fff
+    cursor: default
+    background-color: #fff
+  .up, .down
+    cursor: pointer
+    display: inline-block
+    position: absolute
+    right: 0
+    background-color: #ccc
+    padding: 2px 4px
+
+    &:hover
+      background-color: #eee
+
+  .up
+    border-top-right-radius: 5px
+    top: 0
+
+  .down
+    border-top-left-radius: 5px
+    bottom: 0
+    transform: rotate(180deg)
+
+  .mins, .secs
+    position: absolute
+    top: 0
+    height: 100%
+    padding: 5px
+    input
+      height: 100%
+      -webkit-appearance:none
+      outline: none
+      border: none
+      width: 20px
+      // padding: 0 2px
+      text-align: center
+      margin-right: 5px
+      &:focus
+        background: #ccc
+    label
+      font-weight: bold
+
+  .mins
+    margin-left: 5px
+
+  .secs
+    margin-left: 70px
+
+.styled-list
+  margin: 0
+  padding: 0
+  list-style: none
+  li
+    margin: 20px 0
+    background-color: #eee
+    border: 1px #aaa solid
+    .number
+      // background-color: #ccc
+      font-weight: bold
+      font-size: 2em
+      display: block
+      float: left
+      width: 30px
+      height: 30px
+      line-height: 30px
+      text-align: center
+      // border-radius: 50%
+      margin-top: 5px
+      margin-left: 5px
+      // border-bottom-right-radius: 5px
+    .text
+      padding: 10px
+      display: block
+      float: left
+      width: calc(100% - 60px)
+    &:after
+      content: ''
+      display: table
+      clear: both
