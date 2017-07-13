@@ -1,5 +1,5 @@
 source "https://rubygems.org"
-ruby '2.1.7'
+ruby '2.2.3'
 gem 'rails', '4.2.5.1'
 gem 'responders', '~> 2.1'
 gem 'activerecord-session_store'
