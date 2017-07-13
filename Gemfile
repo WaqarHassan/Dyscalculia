@@ -8,8 +8,8 @@ gem 'sqlite3', group: [:development, :test]
 gem 'puma'
 gem 'pg'
 
-gem 'airbrake'
-
+#gem 'airbrake'
+gem 'airbrake', :git => 'https://github.com/airbrake/airbrake.git'
 gem 'haml-rails'
 gem 'sass-rails'
 gem 'uglifier'

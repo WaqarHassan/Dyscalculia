@@ -13,6 +13,13 @@ GIT
   specs:
     cliver (0.3.2)
 
+GIT
+  remote: https://github.com/airbrake/airbrake.git
+  revision: 2aa218518c01ce4d24b02364eeece65eb7253989
+  specs:
+    airbrake (6.2.0)
+      airbrake-ruby (~> 2.3)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -59,9 +66,7 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.3.8)
-    airbrake (4.3.1)
-      builder
-      multi_json
+    airbrake-ruby (2.3.0)
     amoeba (3.0.0)
       activerecord (>= 3.2.6)
     animate-rails (1.0.10)
@@ -407,7 +412,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-session_store
-  airbrake
+  airbrake!
   amoeba
   animate-rails
   annotate
