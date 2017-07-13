@@ -63,8 +63,11 @@ class ApplicationController < ActionController::Base
     end
 protected
      def configure_permitted_parameters
-       devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:first_name, :last_name, :email, :password, :date_of_birth, :level_of_education, :postcode, :remember_me)}
-       devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:first_name, :last_name, :email, :password, :date_of_birth, :level_of_education, :postcode, :remember_me)}
+       # devise_parameter_sanitizer.for(:sign_up) { |u| u.permit()}
+       # devise_parameter_sanitizer.for(:sign_in) { |u| u.permit()}
+       devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name, :email, :password, :date_of_birth, :level_of_education, :postcode, :remember_me])
+       devise_parameter_sanitizer.permit(:sign_in, keys: [:first_name, :last_name, :email, :password, :date_of_birth, :level_of_education, :postcode, :remember_me])
+
      end
 	def layout_by_resource
     	if user_signed_in?
